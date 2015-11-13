@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_type" translatable="false">com.barry.outside</string>
+    <string name="auth_provider_weather">com.barry.outside.provider.WeatherProvider</string>
+</resources>
