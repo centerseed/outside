@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:add="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_localization"
+        android:title="@string/localizing"
+        android:icon="@mipmap/ic_localization"
+        add:showAsAction="always"/>
+
+<item
+    android:id="@+id/action_setting"
+    android:title="@string/setting"
+    android:icon="@mipmap/ic_setting"
+    add:showAsAction="always"/>
+</menu>

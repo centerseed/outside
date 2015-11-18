@@ -20,8 +20,9 @@ public class WeatherProvider extends ContentProvider {
     public final static String STATUS_UPDATE = "update";
 
     public final static String TABLE_WEATHER = "_weather";
-    public final static String FIELD_ID = "_id";
 
+    public final static String FIELD_ID = "_id";
+    public final static String FIELD_COUNTRY = "_country";
     public final static String FIELD_LOCATION = "_location";
     public final static String FIELD_PM25 = "_pm25";
     public final static String FIELD_UV = "_uv";
@@ -64,20 +65,17 @@ public class WeatherProvider extends ContentProvider {
         return  m_db.getReadableDatabase().update(TABLE_WEATHER, values, selection, selectionArgs);
     }
 
-    public static Uri getProviderUri() {
+    public static Uri getProviderUri(String authority) {
         Uri.Builder ub = new Uri.Builder()
                 .scheme("content")
                 .authority(authority);
         return ub.build();
     }
 
-    public static boolean checkAuthority(Uri uri) {
-        return  uri.getEncodedAuthority().equals(authority) ? true : false;
-    }
-
     private class WeatherDatabase extends SQLiteOpenHelper {
 
-        private final static int _DBVersion = 1;
+        private final static int _DBVersion = 2
+                ;
         private final static String _DBName = "weather.db";
 
         public WeatherDatabase(Context context) {
@@ -88,11 +86,12 @@ public class WeatherProvider extends ContentProvider {
         public void onCreate(SQLiteDatabase db) {
             db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_WEATHER + " ( "
                     + FIELD_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + FIELD_COUNTRY + " TEXT, "
                     + FIELD_LOCATION + " TEXT, "
                     + FIELD_PM25 + " INTEGER, "
                     + FIELD_UV + " TEXT, "
                     + FIELD_TEMPERATURE + " FLOAT, "
-                    + FIELD_TIME + " LONG, "
+                    + FIELD_TIME + " TEXT "
                     + ");");
         }
 

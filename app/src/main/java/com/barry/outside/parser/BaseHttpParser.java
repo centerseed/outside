@@ -1,6 +1,5 @@
 package com.barry.outside.parser;
 
-import android.accounts.Account;
 import android.content.ContentProviderClient;
 import android.content.Context;
 import android.content.Intent;
@@ -18,14 +17,14 @@ import java.io.InputStream;
 /**
  * Created by Owner on 2015/11/13.
  */
-public abstract class BaseParser implements ConnectBuilder.OnResponseListener {
+public abstract class BaseHttpParser implements ConnectBuilder.OnResponseListener {
 
     private static final String TAG = "BaseParser";
-    JSONObject jsonObject;
+    String string;
     protected Context context;
     protected ContentProviderClient providerClient;
 
-    public BaseParser(Context context, ContentProviderClient provider) {
+    public BaseHttpParser(Context context, ContentProviderClient provider) {
         this.context = context;
         providerClient = provider;
     }
@@ -45,22 +44,13 @@ public abstract class BaseParser implements ConnectBuilder.OnResponseListener {
 
     @Override
     public void onResponse(int resCode, InputStream inputStream) {
-        setInputStream(inputStream).parse(jsonObject);
+        setInputStream(inputStream).parse(string);
     }
 
-    abstract void parse(JSONObject object);
+    abstract void parse(String string);
 
-    public BaseParser setInputStream(InputStream inputStream) {
-        String js = URLUtils.convertStreamToString(inputStream);
-        try {
-            jsonObject = new JSONObject(js);
-        } catch (JSONException e) {
-            try {
-                jsonObject = new JSONObject("{data:" + js + "}");
-            } catch (JSONException e1) {
-                e.printStackTrace();
-            }
-        }
+    public BaseHttpParser setInputStream(InputStream inputStream) {
+        string = URLUtils.convertStreamToString(inputStream);
         return this;
     }
 }

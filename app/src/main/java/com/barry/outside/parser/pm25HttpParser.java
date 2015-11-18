@@ -17,23 +17,22 @@ import org.json.JSONObject;
 /**
  * Created by Owner on 2015/11/13.
  */
-public class pm25Parser extends BaseJsonParser {
+public class pm25HttpParser extends BaseHttpParser {
 
     Uri uri;
 
-    public pm25Parser(Context context, ContentProviderClient provider) {
+    public pm25HttpParser(Context context, ContentProviderClient provider) {
         super(context, provider);
         uri = WeatherProvider.getProviderUri(context.getString(R.string.auth_provider_weather));
     }
 
     @Override
-    void parse(JSONObject object) {
-        if (null == object) {
+    void parse(String response) {
+        if (null == response) {
             return;
         }
 
-        Log.d("pm25Parser", object.toString());
-
+    /*
         JSONArray array = object.optJSONArray("data");
         try {
             for (int i = 0; i < array.length(); i++) {
@@ -50,6 +49,6 @@ public class pm25Parser extends BaseJsonParser {
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 }

@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">OutSide</string>title_stock_provider
     <string name="title_weather_provider">Weather Provider</string>
+    <string name="pm25">PM2.5</string>
+    <string name="uv">紫外線</string>
+    <string name="setting">設定</string>
+    <string name="location">現在位置：</string>
+    <string name="choose_country">選擇縣市</string>
+    <string name="localizing">取得位置</string>
 </resources>

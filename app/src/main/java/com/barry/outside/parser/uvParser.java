@@ -17,11 +17,11 @@ import org.json.JSONObject;
 /**
  * Created by Owner on 2015/11/13.
  */
-public class pm25Parser extends BaseJsonParser {
+public class uvParser extends BaseJsonParser {
 
     Uri uri;
 
-    public pm25Parser(Context context, ContentProviderClient provider) {
+    public uvParser(Context context, ContentProviderClient provider) {
         super(context, provider);
         uri = WeatherProvider.getProviderUri(context.getString(R.string.auth_provider_weather));
     }
@@ -39,10 +39,10 @@ public class pm25Parser extends BaseJsonParser {
             for (int i = 0; i < array.length(); i++) {
                 ContentValues cv = new ContentValues();
                 JSONObject jsonObject = array.getJSONObject(i);
-               // cv.put(WeatherProvider.FIELD_ID, jsonObject.optString("SiteName").hashCode());
+              //  cv.put(WeatherProvider.FIELD_ID, jsonObject.optString("SiteName").hashCode());
                 cv.put(WeatherProvider.FIELD_LOCATION, jsonObject.optString("SiteName"));
                 cv.put(WeatherProvider.FIELD_COUNTRY, jsonObject.optString("County"));
-                cv.put(WeatherProvider.FIELD_PM25, jsonObject.optInt("PM2.5"));
+                cv.put(WeatherProvider.FIELD_UV, jsonObject.optInt("PM2.5"));
                 cv.put(WeatherProvider.FIELD_TIME, jsonObject.optInt("PublishTime"));
                 providerClient.insert(uri, cv);
             }

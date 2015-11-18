@@ -124,8 +124,8 @@ public class ConnectBuilder {
             URL url = new URL(m_url);
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(5000);
-            conn.setConnectTimeout(5000);
+            conn.setReadTimeout(30 * 1000);
+            conn.setConnectTimeout(30 * 1000);
 
             conn.setRequestMethod(m_method);
 
