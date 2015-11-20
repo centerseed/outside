@@ -22,6 +22,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".SettingActivity">
+        </activity>
+
         <service
             android:name=".account.AuthenticatorService"
             android:exported="false">

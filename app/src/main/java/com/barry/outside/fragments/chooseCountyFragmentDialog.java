@@ -34,11 +34,18 @@ public class chooseCountyFragmentDialog extends DialogFragment {
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+
                 int position =  ((AlertDialog)getDialog()).getListView().getCheckedItemPosition();
+                if (position == -1) {
+                    dismiss();
+                    return;
+                }
+
                 String location = (String) ((AlertDialog)getDialog()).getListView().getAdapter().getItem(position);
                 if (null != selectedListener) {
                     selectedListener.onSelected(location);
                 }
+                dismiss();
             }
         });
 

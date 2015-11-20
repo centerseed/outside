@@ -17,11 +17,11 @@ import org.json.JSONObject;
 /**
  * Created by Owner on 2015/11/13.
  */
-public class pm25Parser extends BaseJsonParser {
+public class SiteParser extends BaseJsonParser {
 
     Uri uri;
 
-    public pm25Parser(Context context, ContentProviderClient provider) {
+    public SiteParser(Context context, ContentProviderClient provider) {
         super(context, provider);
         uri = WeatherProvider.getProviderUri(context.getString(R.string.auth_provider_weather));
     }
@@ -40,9 +40,15 @@ public class pm25Parser extends BaseJsonParser {
                 ContentValues cv = new ContentValues();
                 JSONObject jsonObject = array.getJSONObject(i);
 
-                cv.put(WeatherProvider.FIELD_PM25, jsonObject.optInt("PM2.5"));
-                cv.put(WeatherProvider.FIELD_TIME, jsonObject.optString("PublishTime"));
-                providerClient.update(uri, cv, WeatherProvider.FIELD_SITE_NAME + "=?", new String[]{jsonObject.optString("SiteName")});
+                String siteName = jsonObject.optString("SiteName");
+                String time = jsonObject.optString("PublishTime");
+
+                cv.put(WeatherProvider.FIELD_ID, (siteName).hashCode());
+                cv.put(WeatherProvider.FIELD_SITE_NAME, jsonObject.optString("SiteName"));
+                cv.put(WeatherProvider.FIELD_COUNTRY, jsonObject.optString("County"));
+                cv.put(WeatherProvider.FIELD_LAT, jsonObject.optDouble("TWD97Lat"));
+                cv.put(WeatherProvider.FIELD_LNG, jsonObject.optDouble("TWD97Lon"));
+                providerClient.insert(uri, cv);
             }
         } catch (RemoteException e) {
             e.printStackTrace();

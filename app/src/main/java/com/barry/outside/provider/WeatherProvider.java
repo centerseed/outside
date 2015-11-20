@@ -23,7 +23,9 @@ public class WeatherProvider extends ContentProvider {
 
     public final static String FIELD_ID = "_id";
     public final static String FIELD_COUNTRY = "_country";
-    public final static String FIELD_LOCATION = "_location";
+    public final static String FIELD_SITE_NAME = "_location";
+    public final static String FIELD_LAT = "_lnt";
+    public final static String FIELD_LNG = "_lng";
     public final static String FIELD_PM25 = "_pm25";
     public final static String FIELD_UV = "_uv";
     public final static String FIELD_TEMPERATURE = "_temperature";
@@ -87,9 +89,11 @@ public class WeatherProvider extends ContentProvider {
             db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_WEATHER + " ( "
                     + FIELD_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + FIELD_COUNTRY + " TEXT, "
-                    + FIELD_LOCATION + " TEXT, "
+                    + FIELD_SITE_NAME + " TEXT, "
                     + FIELD_PM25 + " INTEGER, "
                     + FIELD_UV + " TEXT, "
+                    + FIELD_LAT + " FLOAT, "
+                    + FIELD_LNG + " FLOAT, "
                     + FIELD_TEMPERATURE + " FLOAT, "
                     + FIELD_TIME + " TEXT "
                     + ");");

@@ -40,7 +40,7 @@ public class uvParser extends BaseJsonParser {
                 ContentValues cv = new ContentValues();
                 JSONObject jsonObject = array.getJSONObject(i);
               //  cv.put(WeatherProvider.FIELD_ID, jsonObject.optString("SiteName").hashCode());
-                cv.put(WeatherProvider.FIELD_LOCATION, jsonObject.optString("SiteName"));
+                cv.put(WeatherProvider.FIELD_SITE_NAME, jsonObject.optString("SiteName"));
                 cv.put(WeatherProvider.FIELD_COUNTRY, jsonObject.optString("County"));
                 cv.put(WeatherProvider.FIELD_UV, jsonObject.optInt("PM2.5"));
                 cv.put(WeatherProvider.FIELD_TIME, jsonObject.optInt("PublishTime"));
