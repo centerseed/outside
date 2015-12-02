@@ -23,7 +23,7 @@ public class SiteParser extends BaseJsonParser {
 
     public SiteParser(Context context, ContentProviderClient provider) {
         super(context, provider);
-        uri = WeatherProvider.getProviderUri(context.getString(R.string.auth_provider_weather));
+        uri = WeatherProvider.getProviderUri(context.getString(R.string.auth_provider_weather), WeatherProvider.TABLE_WEATHER);
     }
 
     @Override
@@ -32,7 +32,7 @@ public class SiteParser extends BaseJsonParser {
             return;
         }
 
-        Log.d("pm25Parser", object.toString());
+        Log.e("SiteParser", object.toString());
 
         JSONArray array = object.optJSONObject("result").optJSONArray("records");
         try {

@@ -5,12 +5,14 @@ import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SyncResult;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.barry.outside.BroadcastConst;
 import com.barry.outside.ConnectBuilder;
 import com.barry.outside.R;
 import com.barry.outside.parser.SiteParser;
@@ -42,12 +44,17 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
         Log.d("WeatherSyncAdapter", "on sync...");
 
-        Uri uri = WeatherProvider.getProviderUri(authority);
+        Uri uri = WeatherProvider.getProviderUri(authority, WeatherProvider.TABLE_WEATHER);
         Cursor cursor = contentResolver.query(uri, null, null, null, null);
 
         ConnectBuilder connectBuilder = new ConnectBuilder(getContext());
 
         if (cursor.getCount() == 0) {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             connectBuilder.setMethod("GET")
                     .setUrl("http://opendata.epa.gov.tw/webapi/api/rest/datastore/355000000I000005?sort=SiteName&format=json")
                     .setOnResponseListener(new SiteParser(getContext(), provider))
@@ -60,11 +67,16 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
                 .setOnResponseListener(new pm25Parser(getContext(), provider))
         .open();
 
-     /*   connectBuilder.setMethod("GET")
-                .setUrl("http://opendata.epa.gov.tw/ws/Data/UV/?$orderby=PublishAgency&$skip=0&$top=1000&format=json")
+        connectBuilder.setMethod("GET")
+                .setUrl("http://opendata.epa.gov.tw/webapi/api/rest/datastore/355000000I000004?sort=UVI&format=json")
                 .setOnResponseListener(new uvParser(getContext(), provider))
-                .open(); */
+                .open();
 
-        contentResolver.notifyChange(WeatherProvider.getProviderUri(getContext().getString(R.string.auth_provider_weather)), null, false);
+        Log.e(WeatherSyncAdapter.class.getName(), " Notify data change " + uri);
+        contentResolver.notifyChange(uri, null);
+
+        final Intent intent = new Intent();
+        intent.setAction(BroadcastConst.BROADCAST_GET_SITEINFO + "");
+        getContext().sendBroadcast(intent);
     }
 }

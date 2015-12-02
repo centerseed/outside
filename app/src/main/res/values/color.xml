@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="background">#66808080</color>
+    <color name="background">#96464646</color>
     <color name="color_text_title">#e610314c</color>
+    <color name="color_text_normal">#FFFFFF</color>
+
+    <color name="pm25_very_low">#42a8f8</color>
+    <color name="pm25_low">#2dd981</color>
+    <color name="pm25_normal">#dfce1e</color>
+    <color name="pm25_high">#f7494e</color>
+    <color name="pm25_very_high">#ee30c2</color>
+
+    <array name="color_pm25_array">
+        <item>@color/pm25_very_low</item>
+        <item>@color/pm25_low</item>
+        <item>@color/pm25_normal</item>
+        <item>@color/pm25_high</item>
+        <item>@color/pm25_very_high</item>
+    </array>
 </resources>

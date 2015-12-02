@@ -8,6 +8,13 @@
     <string name="choose_country">選擇縣市</string>
     <string name="localizing">取得位置</string>
     <string name="auto_localizing">自動取得位置</string>
-    <string name="update_time">觀測資料更新時間</string>
+    <string name="update_time">更新時間:</string>
     <string name="update_site">更新測站資料</string>
+    <string name="air_help">PM2.5(即時細懸浮微粒)濃度以及對應說明如下：</string>
+    <string name="pm25_very_low">非常低</string>
+    <string name="pm25_low">低</string>
+    <string name="pm25_normal">一般</string>
+    <string name="pm25_high">高</string>
+    <string name="pm25_very_high">非常高</string>
+    <string name="data_source">資料來源：</string>
 </resources>

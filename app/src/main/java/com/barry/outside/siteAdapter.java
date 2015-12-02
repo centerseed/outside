@@ -36,6 +36,7 @@ public class SiteAdapter extends RecyclerView.Adapter<SiteAdapter.viewHolder> {
         SiteInfo info = siteInfos.get(position);
         holder.tvName.setText(info.name);
         holder.tvPM25.setText(info.pm25 + "");
+        holder.tvPM25.setTextColor(ColorUtils.getColor(context, info.pm25));
     }
 
     @Override

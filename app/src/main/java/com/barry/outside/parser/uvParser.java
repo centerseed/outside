@@ -23,7 +23,7 @@ public class uvParser extends BaseJsonParser {
 
     public uvParser(Context context, ContentProviderClient provider) {
         super(context, provider);
-        uri = WeatherProvider.getProviderUri(context.getString(R.string.auth_provider_weather));
+        uri = WeatherProvider.getProviderUri(context.getString(R.string.auth_provider_weather), WeatherProvider.TABLE_UV);
     }
 
     @Override
@@ -32,18 +32,24 @@ public class uvParser extends BaseJsonParser {
             return;
         }
 
-        Log.d("pm25Parser", object.toString());
+        Log.d("uvParser", object.toString());
+        boolean isSuccess = object.optBoolean("success");
+        if (!isSuccess) {
+            return;
+        }
 
-        JSONArray array = object.optJSONArray("data");
+        JSONArray array = object.optJSONObject("result").optJSONArray("records");
         try {
             for (int i = 0; i < array.length(); i++) {
                 ContentValues cv = new ContentValues();
                 JSONObject jsonObject = array.getJSONObject(i);
-              //  cv.put(WeatherProvider.FIELD_ID, jsonObject.optString("SiteName").hashCode());
+                cv.put(WeatherProvider.FIELD_ID, jsonObject.optString("SiteName").hashCode());
                 cv.put(WeatherProvider.FIELD_SITE_NAME, jsonObject.optString("SiteName"));
                 cv.put(WeatherProvider.FIELD_COUNTRY, jsonObject.optString("County"));
-                cv.put(WeatherProvider.FIELD_UV, jsonObject.optInt("PM2.5"));
-                cv.put(WeatherProvider.FIELD_TIME, jsonObject.optInt("PublishTime"));
+                cv.put(WeatherProvider.FIELD_UV, jsonObject.optDouble("UVI"));
+                cv.put(WeatherProvider.FIELD_LAT_WGS, jsonObject.optString("WGS84Lat"));
+                cv.put(WeatherProvider.FIELD_LNG_WGS, jsonObject.optString("WGS84Lon"));
+                cv.put(WeatherProvider.FIELD_TIME, jsonObject.optString("PublishTime"));
                 providerClient.insert(uri, cv);
             }
         } catch (RemoteException e) {

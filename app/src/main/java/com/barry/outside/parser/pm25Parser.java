@@ -23,7 +23,7 @@ public class pm25Parser extends BaseJsonParser {
 
     public pm25Parser(Context context, ContentProviderClient provider) {
         super(context, provider);
-        uri = WeatherProvider.getProviderUri(context.getString(R.string.auth_provider_weather));
+        uri = WeatherProvider.getProviderUri(context.getString(R.string.auth_provider_weather), WeatherProvider.TABLE_WEATHER);
     }
 
     @Override
@@ -32,7 +32,12 @@ public class pm25Parser extends BaseJsonParser {
             return;
         }
 
-        Log.d("pm25Parser", object.toString());
+        Log.e("pm25Parser", object.toString());
+
+        boolean isSuccess = object.optBoolean("success");
+        if (!isSuccess) {
+            return;
+        }
 
         JSONArray array = object.optJSONObject("result").optJSONArray("records");
         try {

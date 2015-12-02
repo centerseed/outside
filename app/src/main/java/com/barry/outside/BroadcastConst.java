@@ -6,4 +6,5 @@ package com.barry.outside;
 public class BroadcastConst {
     public static final int BROADCAST_UPDATING_LOCATION = 0;
     public static final int BROADCAST_GET_LOCATION = 1;
+    public static final int BROADCAST_GET_SITEINFO = 2;
 }

@@ -38,6 +38,9 @@ abstract public class BroadcastFragment extends Fragment {
     public void onResume() {
         super.onResume();
         IntentFilter intentFilter = getIntentFilter();
+        if (null == intentFilter) {
+            return;
+        }
         getContext().registerReceiver(receiver, intentFilter);
     }
 

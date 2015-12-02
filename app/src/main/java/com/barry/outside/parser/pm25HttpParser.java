@@ -23,7 +23,7 @@ public class pm25HttpParser extends BaseHttpParser {
 
     public pm25HttpParser(Context context, ContentProviderClient provider) {
         super(context, provider);
-        uri = WeatherProvider.getProviderUri(context.getString(R.string.auth_provider_weather));
+        uri = WeatherProvider.getProviderUri(context.getString(R.string.auth_provider_weather), WeatherProvider.TABLE_WEATHER);
     }
 
     @Override
