@@ -33,12 +33,9 @@ public class uvParser extends BaseJsonParser {
         }
 
         Log.d("uvParser", object.toString());
-        boolean isSuccess = object.optBoolean("success");
-        if (!isSuccess) {
-            return;
-        }
 
-        JSONArray array = object.optJSONObject("result").optJSONArray("records");
+        // JSONArray array = object.optJSONObject("result").optJSONArray("records");
+        JSONArray array = object.optJSONArray("data");
         try {
             for (int i = 0; i < array.length(); i++) {
                 ContentValues cv = new ContentValues();

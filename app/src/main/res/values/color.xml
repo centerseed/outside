@@ -7,8 +7,8 @@
     <color name="pm25_very_low">#42a8f8</color>
     <color name="pm25_low">#2dd981</color>
     <color name="pm25_normal">#dfce1e</color>
-    <color name="pm25_high">#f7494e</color>
-    <color name="pm25_very_high">#ee30c2</color>
+    <color name="pm25_high">#ff6269</color>
+    <color name="pm25_very_high">#d366ff</color>
 
     <array name="color_pm25_array">
         <item>@color/pm25_very_low</item>

@@ -24,10 +24,17 @@
                 android:text="@string/pm25"
                 android:id="@+id/textView"
                 android:layout_gravity="center"
-                android:layout_weight="1"
+                android:layout_weight="0"
                 android:gravity="bottom"
                 android:textSize="16dp"
                 android:textColor="@color/color_text_normal" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/iv_report"
+                android:src="@mipmap/ic_report"
+                android:layout_marginLeft="4dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -36,7 +43,9 @@
                 android:id="@+id/textView11"
                 android:layout_gravity="center_vertical"
                 android:textSize="12dp"
-                android:textColor="@color/color_text_normal" />
+                android:textColor="@color/color_text_normal"
+                android:layout_weight="1"
+                android:gravity="right" />
 
             <TextView
                 android:layout_width="wrap_content"

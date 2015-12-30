@@ -6,8 +6,9 @@ import android.database.Cursor;
 import android.location.Location;
 import android.net.Uri;
 
+import com.barry.outside.air.SiteInfo;
 import com.barry.outside.provider.WeatherProvider;
-import com.barry.outside.syncadapter.UVInfo;
+import com.barry.outside.network.UVInfo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -93,7 +94,7 @@ public class LocationUtils {
         Collections.sort(siteInfos, new Comparator<SiteInfo>() {
             @Override
             public int compare(SiteInfo siteInfo, SiteInfo t1) {
-                return (int) (siteInfo.distance - t1.distance);
+                return (int) (siteInfo.getDistance() - t1.getDistance());
             }
         });
 

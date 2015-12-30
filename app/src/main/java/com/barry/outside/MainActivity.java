@@ -2,16 +2,12 @@ package com.barry.outside;
 
 import android.Manifest;
 import android.accounts.Account;
-import android.app.Activity;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -22,14 +18,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.barry.outside.account.AccountUtil;
-import com.barry.outside.fragments.AirFragment;
-import com.barry.outside.fragments.UVFragment;
-import com.barry.outside.fragments.chooseCountyFragmentDialog;
-import com.barry.outside.provider.WeatherProvider;
-import com.google.android.gms.common.api.GoogleApiClient;
+import com.barry.outside.air.AirFragment;
+import com.barry.outside.uv.UVFragment;
 
 
 /**

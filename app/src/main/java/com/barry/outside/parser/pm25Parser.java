@@ -34,12 +34,13 @@ public class pm25Parser extends BaseJsonParser {
 
         Log.e("pm25Parser", object.toString());
 
-        boolean isSuccess = object.optBoolean("success");
+     /*   boolean isSuccess = object.optBoolean("success");
         if (!isSuccess) {
             return;
-        }
+        } */
 
-        JSONArray array = object.optJSONObject("result").optJSONArray("records");
+       // JSONArray array = object.optJSONObject("result").optJSONArray("records");
+        JSONArray array = object.optJSONArray("data");
         try {
             for (int i = 0; i < array.length(); i++) {
                 ContentValues cv = new ContentValues();

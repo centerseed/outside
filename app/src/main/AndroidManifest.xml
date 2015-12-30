@@ -26,6 +26,8 @@
         <activity android:name=".SettingActivity">
         </activity>
 
+        <activity android:name=".air.PM25RankActivity"/>
+
         <service
             android:name=".account.AuthenticatorService"
             android:exported="false">
@@ -46,7 +48,7 @@
             android:syncable="true" />
 
         <service
-            android:name=".syncadapter.WeatherSyncService"
+            android:name=".network.WeatherSyncService"
             android:exported="true"
             android:process=":syncWeather">
             <intent-filter>

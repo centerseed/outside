@@ -1,7 +1,6 @@
 package com.barry.outside;
 
 import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.content.ContentProviderClient;
 import android.content.ContentValues;
 import android.content.Context;
@@ -12,7 +11,7 @@ import android.os.RemoteException;
 import android.util.Log;
 
 import com.barry.outside.provider.WeatherProvider;
-import com.barry.outside.syncadapter.WeatherSyncAdapter;
+import com.barry.outside.network.WeatherSyncAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

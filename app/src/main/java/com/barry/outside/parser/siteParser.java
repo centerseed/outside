@@ -34,7 +34,8 @@ public class SiteParser extends BaseJsonParser {
 
         Log.e("SiteParser", object.toString());
 
-        JSONArray array = object.optJSONObject("result").optJSONArray("records");
+        // JSONArray array = object.optJSONObject("result").optJSONArray("records");
+        JSONArray array = object.optJSONArray("data");
         try {
             for (int i = 0; i < array.length(); i++) {
                 ContentValues cv = new ContentValues();

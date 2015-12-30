@@ -7,7 +7,7 @@ import android.util.Log;
 
 import com.barry.outside.ConnectBuilder;
 import com.barry.outside.URLUtils;
-import com.barry.outside.syncadapter.WeatherSyncAdapter;
+import com.barry.outside.network.WeatherSyncAdapter;
 
 import org.json.JSONException;
 import org.json.JSONObject;
