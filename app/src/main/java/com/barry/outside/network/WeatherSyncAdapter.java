@@ -91,9 +91,5 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
 
         Log.e(WeatherSyncAdapter.class.getName(), " Notify data change " + uri);
         contentResolver.notifyChange(uri, null);
-
-        final Intent intent = new Intent();
-        intent.setAction(BroadcastConst.BROADCAST_GET_SITEINFO + "");
-        getContext().sendBroadcast(intent);
     }
 }

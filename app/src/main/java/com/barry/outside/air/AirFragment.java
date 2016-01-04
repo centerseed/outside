@@ -18,11 +18,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.barry.outside.BroadcastConst;
+import com.barry.outside.BroadcastFragment;
 import com.barry.outside.ColorUtils;
+import com.barry.outside.CursorChangedObserver;
 import com.barry.outside.LocationUtils;
 import com.barry.outside.PreferenceUtils;
 import com.barry.outside.R;
-import com.barry.outside.BroadcastFragment;
 import com.barry.outside.provider.WeatherProvider;
 
 import java.util.ArrayList;
@@ -44,12 +45,22 @@ public class AirFragment extends BroadcastFragment implements LoaderManager.Load
     String siteName = "";
 
     RecyclerView recyclerView;
+    private CursorChangedObserver cursorObserver;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         contentUri = WeatherProvider.getProviderUri(getContext().getResources().getString(R.string.auth_provider_weather), WeatherProvider.TABLE_WEATHER);
+        cursorObserver = new CursorChangedObserver(new CursorChangedObserver.OnCursorChangedListener() {
+            @Override
+            public void onCursorChanged(Cursor c) {
+                try {
+                    reload();
+                } catch (Exception e) {
+                }
+            }
+        });
         return inflater.inflate(R.layout.fragment_air, container, false);
     }
 
@@ -87,12 +98,9 @@ public class AirFragment extends BroadcastFragment implements LoaderManager.Load
     }
 
     @Override
-    public IntentFilter getIntentFilter() {
-        IntentFilter f = new IntentFilter();
+    public void addIntentFilter(IntentFilter f) {
         f.addAction(BroadcastConst.BROADCAST_GET_LOCATION + "");
         f.addAction(BroadcastConst.BROADCAST_UPDATING_LOCATION + "");
-        f.addAction(BroadcastConst.BROADCAST_GET_SITEINFO + "");
-        return f;
     }
 
     @Override
@@ -104,12 +112,9 @@ public class AirFragment extends BroadcastFragment implements LoaderManager.Load
                 if (null != location) {
                     updateLocation(location);
                 }
-                Log.e(AirFragment.class.getName(), "get location " + location.toString() );
+                Log.e(AirFragment.class.getName(), "get location " + location.toString());
                 break;
             case BroadcastConst.BROADCAST_UPDATING_LOCATION:
-                break;
-            case BroadcastConst.BROADCAST_GET_SITEINFO:
-                getLoaderManager().restartLoader(LOADER_SITE, null, this);
                 break;
         }
     }
@@ -119,7 +124,6 @@ public class AirFragment extends BroadcastFragment implements LoaderManager.Load
         CursorLoader cl = new CursorLoader(getActivity());
         cl.setUri(contentUri);
         Log.e(AirFragment.class.getName(), "onCreateLoader " + cl);
-
         return cl;
     }
 
@@ -128,6 +132,8 @@ public class AirFragment extends BroadcastFragment implements LoaderManager.Load
         if (null == cursor || null == location) {
             return;
         }
+
+        cursorObserver.swapCursor(cursor);
 
         if (cursor.moveToFirst()) {
             switch (loader.getId()) {
@@ -168,5 +174,9 @@ public class AirFragment extends BroadcastFragment implements LoaderManager.Load
         tvPM25.setText(pm25 + "");
         tvPM25.setTextColor(ColorUtils.getColor(getContext(), pm25));
         tvTime.setText(time);
+    }
+
+    private void reload() {
+        getLoaderManager().restartLoader(LOADER_SITE, null, this);
     }
 }

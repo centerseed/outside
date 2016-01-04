@@ -29,7 +29,7 @@ import com.barry.outside.uv.UVFragment;
  */
 public class MainActivity extends ToolbarActivity implements LocationListener, chooseCountyFragmentDialog.OnSelectedListener{
 
-    final long SYNC_PERIOD = 50 * 1000;
+    final long SYNC_PERIOD = 50L * 60L;
 
     LocationManager locationManager;
     Account account;
@@ -37,6 +37,7 @@ public class MainActivity extends ToolbarActivity implements LocationListener, c
     Location location;
     TextView tvLocation;
     ProgressBar pbLoading;
+    ContentResolver mResolver;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,8 +51,10 @@ public class MainActivity extends ToolbarActivity implements LocationListener, c
         initUI();
         initFragment();
 
+        mResolver = getContentResolver();
         account = AccountUtil.getAccount(this);
         authority = getResources().getString(R.string.auth_provider_weather);
+        mResolver.setSyncAutomatically(account, authority, true);
         ContentResolver.addPeriodicSync(account, authority, Bundle.EMPTY, SYNC_PERIOD);
     }
 
@@ -62,15 +65,15 @@ public class MainActivity extends ToolbarActivity implements LocationListener, c
         Bundle args = new Bundle();
         args.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
         args.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
-        ContentResolver.requestSync(account, authority, args);
+        mResolver.requestSync(account, authority, args);
 
         location = PreferenceUtils.getLastLocation(this);
         if (PreferenceUtils.getAutoLocalize(this)) {
             updateLocation();
         } else {
             tvLocation.setText(LocationUtils.getNearbyCountry(this, location.getLatitude(), location.getLongitude()));
-            sendBroadcast(BroadcastConst.BROADCAST_GET_LOCATION);
         }
+        sendBroadcast(BroadcastConst.BROADCAST_GET_LOCATION);
     }
 
     @Override
@@ -145,6 +148,8 @@ public class MainActivity extends ToolbarActivity implements LocationListener, c
 
     private void initFragment() {
         Fragment f = new AirFragment();
+        Bundle args = new Bundle();
+        args.putParcelable("location", location);
         getSupportFragmentManager().beginTransaction().replace(R.id.container_air, f).commit();
 
         Fragment f_uv = new UVFragment();
@@ -179,6 +184,7 @@ public class MainActivity extends ToolbarActivity implements LocationListener, c
         if (checkPermission()) {
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, MainActivity.this);
             sendBroadcast(BroadcastConst.BROADCAST_UPDATING_LOCATION);
+            pbLoading.setVisibility(View.VISIBLE);
         }
     }
 

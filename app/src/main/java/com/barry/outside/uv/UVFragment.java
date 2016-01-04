@@ -68,11 +68,9 @@ public class UVFragment extends BroadcastFragment implements LoaderManager.Loade
     }
 
     @Override
-    public IntentFilter getIntentFilter() {
-        IntentFilter f = new IntentFilter();
+    public void addIntentFilter(IntentFilter f) {
         f.addAction(BroadcastConst.BROADCAST_GET_LOCATION + "");
         f.addAction(BroadcastConst.BROADCAST_GET_SITEINFO + "");
-        return f;
     }
 
     @Override

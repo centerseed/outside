@@ -1,7 +1,5 @@
 package com.barry.outside.air;
 
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -34,7 +32,7 @@ public class AirRankingFragment extends Fragment implements LoaderManager.Loader
         adapter = new SiteCursorAdapter(getContext(), null);
 
         contentUri = WeatherProvider.getProviderUri(getContext().getResources().getString(R.string.auth_provider_weather), WeatherProvider.TABLE_WEATHER);
-        return inflater.inflate(R.layout.fragment_rank, container, false);
+        return inflater.inflate(R.layout.fragment_recycler, container, false);
     }
 
     @Override

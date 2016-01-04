@@ -37,10 +37,8 @@ abstract public class BroadcastFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        IntentFilter intentFilter = getIntentFilter();
-        if (null == intentFilter) {
-            return;
-        }
+        IntentFilter intentFilter = new IntentFilter();
+        addIntentFilter(intentFilter);
         getContext().registerReceiver(receiver, intentFilter);
     }
 
@@ -50,6 +48,6 @@ abstract public class BroadcastFragment extends Fragment {
         getContext().unregisterReceiver(receiver);
     }
 
-    public abstract IntentFilter getIntentFilter();
+    public abstract void addIntentFilter(IntentFilter filter);
     public abstract void onReceiveBroadcast(int action, Intent intent);
 }
