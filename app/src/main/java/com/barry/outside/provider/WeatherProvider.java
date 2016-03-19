@@ -52,7 +52,9 @@ public class WeatherProvider extends ContentProvider {
 
     @Override
     public Cursor query(Uri uri, String[] columns, String selection, String[] selectionArgs, String sortOrder) {
-        return m_db.getReadableDatabase().query(getTableName(uri), columns, selection, selectionArgs, null, null, sortOrder);
+        Cursor c = m_db.getReadableDatabase().query(getTableName(uri), columns, selection, selectionArgs, null, null, sortOrder);
+        c.setNotificationUri(getContext().getContentResolver(), uri);
+        return c;
     }
 
     @Override

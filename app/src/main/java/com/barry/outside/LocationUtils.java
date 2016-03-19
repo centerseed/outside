@@ -98,6 +98,10 @@ public class LocationUtils {
             }
         });
 
+        if (siteInfos.size() < 10) {
+            return siteInfos;
+        }
+
         ArrayList<SiteInfo> subInfos = new ArrayList<SiteInfo>(siteInfos.subList(0, 10));
         return subInfos;
     }

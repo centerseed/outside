@@ -18,4 +18,6 @@
     <string name="pm25_very_high">非常高</string>
     <string name="pm25_rank">PM2.5排名</string>
     <string name="data_source">資料來源：</string>
+    <string name="title_activity_init">InitActivity</string>
+    <string name="title_activity_maps">Map</string>
 </resources>

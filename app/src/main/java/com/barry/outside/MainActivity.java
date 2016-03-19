@@ -3,14 +3,19 @@ package com.barry.outside;
 import android.Manifest;
 import android.accounts.Account;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,7 +26,12 @@ import android.widget.TextView;
 
 import com.barry.outside.account.AccountUtil;
 import com.barry.outside.air.AirFragment;
+import com.barry.outside.provider.WeatherProvider;
 import com.barry.outside.uv.UVFragment;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 /**
@@ -38,6 +48,9 @@ public class MainActivity extends ToolbarActivity implements LocationListener, c
     TextView tvLocation;
     ProgressBar pbLoading;
     ContentResolver mResolver;
+
+    final int LOCATION_PERMISSION_REQUEST_CODE = 100;
+    final int LOCATION_ACCOUNT_REQUEST_CODE = 101;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,16 +69,22 @@ public class MainActivity extends ToolbarActivity implements LocationListener, c
         authority = getResources().getString(R.string.auth_provider_weather);
         mResolver.setSyncAutomatically(account, authority, true);
         ContentResolver.addPeriodicSync(account, authority, Bundle.EMPTY, SYNC_PERIOD);
+
+        Uri uri = WeatherProvider.getProviderUri(authority, WeatherProvider.TABLE_WEATHER);
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+
+        if (cursor.getCount() == 0) {
+            Intent intent = new Intent(this, InitActivity.class);
+            startActivity(intent);
+            finish();
+
+        }
+        cursor.close();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
-        Bundle args = new Bundle();
-        args.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
-        args.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
-        mResolver.requestSync(account, authority, args);
 
         location = PreferenceUtils.getLastLocation(this);
         if (PreferenceUtils.getAutoLocalize(this)) {
@@ -131,16 +150,12 @@ public class MainActivity extends ToolbarActivity implements LocationListener, c
     }
 
     private boolean checkPermission() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
 
-            // TODO: Consider calling
-            //    public void requestPermissions(@NonNull String[] permissions, int requestCode)
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for Activity#requestPermissions for more details.
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
+                    LOCATION_PERMISSION_REQUEST_CODE);
+
             return false;
         }
         return true;
@@ -185,6 +200,18 @@ public class MainActivity extends ToolbarActivity implements LocationListener, c
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, MainActivity.this);
             sendBroadcast(BroadcastConst.BROADCAST_UPDATING_LOCATION);
             pbLoading.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                updateLocation();
+            } else {
+                // Permission Denied
+            }
         }
     }
 

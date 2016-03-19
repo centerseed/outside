@@ -90,15 +90,30 @@
                     android:textColor="@color/color_text_normal"
                     android:gravity="bottom" />
 
-                <TextView
+                <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:id="@+id/tv_site"
-                    android:gravity="center_horizontal|bottom"
-                    android:layout_gravity="bottom|right"
-                    android:layout_marginLeft="8dp"
-                    android:textColor="@color/color_text_normal" />
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="8dp">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:id="@+id/map"
+                        android:src="@android:drawable/ic_dialog_map"
+                        android:layout_marginTop="8dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:id="@+id/tv_site"
+                        android:textColor="@color/color_text_normal"
+                        android:layout_weight="1"
+                        android:layout_gravity="top" />
+                </LinearLayout>
+
             </LinearLayout>
 
             <ImageView

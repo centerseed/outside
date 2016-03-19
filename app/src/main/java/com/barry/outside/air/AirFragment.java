@@ -1,5 +1,6 @@
 package com.barry.outside.air;
 
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
@@ -22,8 +23,10 @@ import com.barry.outside.BroadcastFragment;
 import com.barry.outside.ColorUtils;
 import com.barry.outside.CursorChangedObserver;
 import com.barry.outside.LocationUtils;
+import com.barry.outside.MapsActivity;
 import com.barry.outside.PreferenceUtils;
 import com.barry.outside.R;
+import com.barry.outside.account.AccountUtil;
 import com.barry.outside.provider.WeatherProvider;
 
 import java.util.ArrayList;
@@ -43,15 +46,18 @@ public class AirFragment extends BroadcastFragment implements LoaderManager.Load
 
     String country = "";
     String siteName = "";
+    String authority;
 
     RecyclerView recyclerView;
     private CursorChangedObserver cursorObserver;
+    ImageView mImage;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        contentUri = WeatherProvider.getProviderUri(getContext().getResources().getString(R.string.auth_provider_weather), WeatherProvider.TABLE_WEATHER);
+        authority = getContext().getResources().getString(R.string.auth_provider_weather);
+        contentUri = WeatherProvider.getProviderUri(authority, WeatherProvider.TABLE_WEATHER);
         cursorObserver = new CursorChangedObserver(new CursorChangedObserver.OnCursorChangedListener() {
             @Override
             public void onCursorChanged(Cursor c) {
@@ -61,6 +67,8 @@ public class AirFragment extends BroadcastFragment implements LoaderManager.Load
                 }
             }
         });
+
+        getLoaderManager().initLoader(LOADER_SITE, null, this);
         return inflater.inflate(R.layout.fragment_air, container, false);
     }
 
@@ -70,6 +78,18 @@ public class AirFragment extends BroadcastFragment implements LoaderManager.Load
 
         tvSite = (TextView) view.findViewById(R.id.tv_site);
         tvPM25 = (TextView) view.findViewById(R.id.tv_pm25);
+
+        mImage = (ImageView) view.findViewById(R.id.map);
+        mImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), MapsActivity.class);
+                intent.putExtra("location", location);
+                intent.putExtra("name", tvSite.getText().toString());
+                startActivity(intent);
+            }
+        });
+
         tvTime = (TextView) view.findViewById(R.id.tv_update_time);
         ImageView ivReport = (ImageView) view.findViewById(R.id.iv_report);
         ivReport.setOnClickListener(new View.OnClickListener() {
@@ -89,7 +109,11 @@ public class AirFragment extends BroadcastFragment implements LoaderManager.Load
     @Override
     public void onResume() {
         super.onResume();
-        getLoaderManager().initLoader(LOADER_SITE, null, this);
+
+        Bundle args = new Bundle();
+        args.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+        args.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+        getActivity().getContentResolver().requestSync(AccountUtil.getAccount(getActivity()), authority, args);
     }
 
     @Override
@@ -129,11 +153,14 @@ public class AirFragment extends BroadcastFragment implements LoaderManager.Load
 
     @Override
     public void onLoadFinished(android.support.v4.content.Loader<Cursor> loader, Cursor cursor) {
-        if (null == cursor || null == location) {
+        cursorObserver.swapCursor(cursor);
+        if (null == cursor) {
             return;
         }
 
-        cursorObserver.swapCursor(cursor);
+        if (null == location) {
+            return;
+        }
 
         if (cursor.moveToFirst()) {
             switch (loader.getId()) {
@@ -144,6 +171,9 @@ public class AirFragment extends BroadcastFragment implements LoaderManager.Load
                     SiteInfo info = infos.get(0);
                     updateSitePM25Info(info.getName(), info.getCountry(), info.getPm25(), info.getUpdateTime());
 
+                    if (infos.size() < 10) {
+                        return;
+                    }
                     SiteAdapter adapter = new SiteAdapter(getContext(), new ArrayList<>(infos.subList(1, 10)));
                     recyclerView.setAdapter(adapter);
                     break;
@@ -156,7 +186,7 @@ public class AirFragment extends BroadcastFragment implements LoaderManager.Load
     @Override
     public void onLoaderReset(android.support.v4.content.Loader<Cursor> loader) {
         Log.e(AirFragment.class.getName(), "onLoaderReset ");
-        getLoaderManager().restartLoader(LOADER_SITE, null, this);
+        reload();
     }
 
     public void updateLocation(Location location) {
@@ -166,7 +196,7 @@ public class AirFragment extends BroadcastFragment implements LoaderManager.Load
         country = LocationUtils.getNearbyCountry(getContext(), location.getLatitude(), location.getLongitude());
         siteName = LocationUtils.getNearbySite(getContext(), location.getLatitude(), location.getLongitude());
 
-        getLoaderManager().restartLoader(LOADER_SITE, null, this);
+        reload();
     }
 
     private void updateSitePM25Info(String name, String country, int pm25, String time) {

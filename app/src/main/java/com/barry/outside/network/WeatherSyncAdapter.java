@@ -50,34 +50,7 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
         Log.d("WeatherSyncAdapter", "on sync...");
 
-        Uri uri = WeatherProvider.getProviderUri(authority, WeatherProvider.TABLE_WEATHER);
-        Cursor cursor = contentResolver.query(uri, null, null, null, null);
-
         ConnectBuilder connectBuilder = new ConnectBuilder(getContext());
-
-        if (cursor.getCount() == 0) {
-            try {
-                JSONArray array = new JSONArray(getContext().getString(R.string.site_infos));
-                for (int i = 0; i < array.length(); i++) {
-                    ContentValues cv = new ContentValues();
-                    JSONObject jsonObject = array.getJSONObject(i);
-
-                    String siteName = jsonObject.optString("SiteName");
-                    cv.put(WeatherProvider.FIELD_ID, (siteName).hashCode());
-                    cv.put(WeatherProvider.FIELD_SITE_NAME, jsonObject.optString("SiteName"));
-                    cv.put(WeatherProvider.FIELD_COUNTRY, jsonObject.optString("County"));
-                    cv.put(WeatherProvider.FIELD_LAT, jsonObject.optDouble("TWD97Lat"));
-                    cv.put(WeatherProvider.FIELD_LNG, jsonObject.optDouble("TWD97Lon"));
-                    provider.insert(uri, cv);
-                }
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        cursor.close();
-
         connectBuilder.setMethod("GET")
                // .setUrl("http://opendata.epa.gov.tw/webapi/api/rest/datastore/355000000I000001?sort=SiteName&format=json")
                 .setUrl("http://opendata.epa.gov.tw/ws/Data/AQX/?format=json")
@@ -89,6 +62,7 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
                 .setOnResponseListener(new uvParser(getContext(), provider))
                 .open();
 
+        Uri uri = WeatherProvider.getProviderUri(authority, WeatherProvider.TABLE_WEATHER);
         Log.e(WeatherSyncAdapter.class.getName(), " Notify data change " + uri);
         contentResolver.notifyChange(uri, null);
     }

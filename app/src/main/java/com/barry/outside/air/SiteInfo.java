@@ -5,6 +5,7 @@ import android.location.Location;
 
 import com.barry.outside.LocationUtils;
 import com.barry.outside.provider.WeatherProvider;
+import com.google.android.gms.maps.model.LatLng;
 
 /**
  * Created by Mac on 15/11/20.
@@ -37,4 +38,8 @@ public class SiteInfo {
     public String getUpdateTime() {return updateTime;}
     public int getPm25() { return pm25; }
     public double getDistance() {return distance;}
+
+    public LatLng getLatlng() {
+        return new LatLng(lat, lng);
+    }
 }
