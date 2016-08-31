@@ -9,8 +9,8 @@ android {
         applicationId "com.barry.outside"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 9
-        versionName "1.05"
+        versionCode 10
+        versionName "1.06"
     }
     buildTypes {
         release {
@@ -18,12 +18,25 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    signingConfigs {
+        debug {
+            storeFile file("keystore.jks")
+            storePassword "ncu03021"
+            keyAlias "outsode"
+            keyPassword "ncu03021"
+        }
+        release {
+            storeFile file("keystore.jks")
+            storePassword "ncu03021"
+            keyAlias "outsode"
+            keyPassword "ncu03021"
+        }
+    }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    // compile 'com.google.android.gms:play-services:8.3.0'
-    //  compile 'com.google.android.gms:play-services-location:8.3.0'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
     compile 'com.android.support:cardview-v7:23.1.1'
