@@ -1,4 +1,4 @@
-package com.barry.outside;
+package com.barry.outside.utils;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -6,9 +6,9 @@ import android.database.Cursor;
 import android.location.Location;
 import android.net.Uri;
 
+import com.barry.outside.R;
 import com.barry.outside.air.SiteInfo;
 import com.barry.outside.provider.WeatherProvider;
-import com.barry.outside.network.UVInfo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,7 +55,7 @@ public class LocationUtils {
 
         ContentResolver resolver = c.getContentResolver();
 
-        Uri uri = WeatherProvider.getProviderUri(c.getResources().getString(R.string.auth_provider_weather), WeatherProvider.TABLE_WEATHER);
+        Uri uri = WeatherProvider.getProviderUri(c.getResources().getString(R.string.auth_provider_weather), WeatherProvider.TABLE_PM25);
         Cursor cursor = resolver.query(uri, null, null, null, null);
         if (null != cursor && cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
@@ -98,36 +98,7 @@ public class LocationUtils {
             }
         });
 
-        if (siteInfos.size() < 10) {
-            return siteInfos;
-        }
-
-        ArrayList<SiteInfo> subInfos = new ArrayList<SiteInfo>(siteInfos.subList(0, 10));
-        return subInfos;
-    }
-
-    public static ArrayList<UVInfo> getNearestUvSiteArray(Cursor c, Location location) {
-        ArrayList<UVInfo> infos = new ArrayList<>();
-
-        if (c == null || !c.moveToFirst()) {
-            return infos;
-        }
-
-        while (!c.isAfterLast()) {
-            UVInfo uvInfo = new UVInfo(c);
-            uvInfo.caculateDistance(location);
-            infos.add(uvInfo);
-            c.moveToNext();
-        }
-
-        Collections.sort(infos, new Comparator<UVInfo>() {
-            @Override
-            public int compare(UVInfo siteInfo, UVInfo t1) {
-                return (int) (siteInfo.distance - t1.distance);
-            }
-        });
-
-        return infos;
+        return siteInfos;
     }
 
     public static Location getLocationByName(Context c, String name) {

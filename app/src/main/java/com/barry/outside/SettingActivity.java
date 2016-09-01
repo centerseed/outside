@@ -1,10 +1,11 @@
 package com.barry.outside;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+
+import com.barry.outside.utils.PreferenceUtils;
 
 /**
  * Created by Mac on 15/11/18.

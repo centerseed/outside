@@ -1,4 +1,4 @@
-package com.barry.outside.parser;
+package com.barry.outside.base;
 
 import android.content.ContentProviderClient;
 import android.content.Context;
@@ -47,7 +47,7 @@ public abstract class BaseJsonParser implements ConnectBuilder.OnResponseListene
         setInputStream(inputStream).parse(jsonObject);
     }
 
-    abstract void parse(JSONObject object);
+    public abstract void parse(JSONObject object);
 
     public BaseJsonParser setInputStream(InputStream inputStream) {
         String js = URLUtils.convertStreamToString(inputStream);

@@ -1,7 +1,9 @@
-package com.barry.outside;
+package com.barry.outside.utils;
 
 import android.content.Context;
 import android.graphics.Color;
+
+import com.barry.outside.R;
 
 import java.util.Arrays;
 import java.util.List;

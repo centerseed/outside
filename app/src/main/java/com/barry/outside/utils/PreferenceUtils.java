@@ -1,4 +1,4 @@
-package com.barry.outside;
+package com.barry.outside.utils;
 
 import android.content.Context;
 import android.location.Location;

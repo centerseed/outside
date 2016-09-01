@@ -1,19 +1,16 @@
 package com.barry.outside;
 
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.location.Location;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.MenuItem;
-import android.widget.ImageView;
 
 import com.barry.outside.air.SiteInfo;
 import com.barry.outside.provider.WeatherProvider;
+import com.barry.outside.utils.LocationUtils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -78,7 +75,7 @@ public class MapsActivity extends ToolbarActivity implements OnMapReadyCallback,
                         .build();
 
         // 使用動畫的效果移動地圖
-        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
         getSupportLoaderManager().initLoader(0, null, this);
     }
@@ -86,7 +83,7 @@ public class MapsActivity extends ToolbarActivity implements OnMapReadyCallback,
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         CursorLoader cl = new CursorLoader(this);
-        cl.setUri(WeatherProvider.getProviderUri(getString(R.string.auth_provider_weather), WeatherProvider.TABLE_WEATHER));
+        cl.setUri(WeatherProvider.getProviderUri(getString(R.string.auth_provider_weather), WeatherProvider.TABLE_PM25));
         return cl;
     }
 

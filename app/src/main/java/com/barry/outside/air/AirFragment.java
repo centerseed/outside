@@ -19,12 +19,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.barry.outside.BroadcastConst;
-import com.barry.outside.BroadcastFragment;
-import com.barry.outside.ColorUtils;
+import com.barry.outside.base.BroadcastFragment;
+import com.barry.outside.utils.ColorUtils;
 import com.barry.outside.CursorChangedObserver;
-import com.barry.outside.LocationUtils;
+import com.barry.outside.utils.LocationUtils;
 import com.barry.outside.MapsActivity;
-import com.barry.outside.PreferenceUtils;
+import com.barry.outside.utils.PreferenceUtils;
 import com.barry.outside.R;
 import com.barry.outside.account.AccountUtil;
 import com.barry.outside.provider.WeatherProvider;
@@ -57,7 +57,7 @@ public class AirFragment extends BroadcastFragment implements LoaderManager.Load
         super.onCreateView(inflater, container, savedInstanceState);
 
         authority = getContext().getResources().getString(R.string.auth_provider_weather);
-        contentUri = WeatherProvider.getProviderUri(authority, WeatherProvider.TABLE_WEATHER);
+        contentUri = WeatherProvider.getProviderUri(authority, WeatherProvider.TABLE_PM25);
         cursorObserver = new CursorChangedObserver(new CursorChangedObserver.OnCursorChangedListener() {
             @Override
             public void onCursorChanged(Cursor c) {
@@ -149,6 +149,11 @@ public class AirFragment extends BroadcastFragment implements LoaderManager.Load
         cl.setUri(contentUri);
         Log.e(AirFragment.class.getName(), "onCreateLoader " + cl);
         return cl;
+    }
+
+    @Override
+    protected Uri getProviderUri() {
+        return null;
     }
 
     @Override

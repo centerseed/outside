@@ -5,11 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
 
 import com.barry.outside.provider.WeatherProvider;
 
@@ -34,7 +30,7 @@ public class InitActivity extends AppCompatActivity {
 
             try {
                 String authority = getResources().getString(R.string.auth_provider_weather);
-                Uri uri = WeatherProvider.getProviderUri(authority, WeatherProvider.TABLE_WEATHER);
+                Uri uri = WeatherProvider.getProviderUri(authority, WeatherProvider.TABLE_PM25);
 
                 JSONArray array = new JSONArray(getString(R.string.site_infos));
                 for (int i = 0; i < array.length(); i++) {

@@ -31,7 +31,7 @@ public class AirRankingFragment extends Fragment implements LoaderManager.Loader
 
         adapter = new SiteCursorAdapter(getContext(), null);
 
-        contentUri = WeatherProvider.getProviderUri(getContext().getResources().getString(R.string.auth_provider_weather), WeatherProvider.TABLE_WEATHER);
+        contentUri = WeatherProvider.getProviderUri(getContext().getResources().getString(R.string.auth_provider_weather), WeatherProvider.TABLE_PM25);
         return inflater.inflate(R.layout.fragment_recycler, container, false);
     }
 

@@ -1,4 +1,4 @@
-package com.barry.outside;
+package com.barry.outside.base;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -7,10 +7,9 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
-/**
- * Created by Mac on 15/11/16.
- */
-abstract public class BroadcastFragment extends Fragment {
+import com.google.android.gms.maps.GoogleMap;
+
+abstract public class BroadcastFragment extends ContentFragment {
 
     protected BroadcastReceiver receiver;
     protected IntentFilter filter;

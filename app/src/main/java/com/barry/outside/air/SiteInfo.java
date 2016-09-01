@@ -3,7 +3,7 @@ package com.barry.outside.air;
 import android.database.Cursor;
 import android.location.Location;
 
-import com.barry.outside.LocationUtils;
+import com.barry.outside.utils.LocationUtils;
 import com.barry.outside.provider.WeatherProvider;
 import com.google.android.gms.maps.model.LatLng;
 

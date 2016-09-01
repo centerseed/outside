@@ -1,4 +1,4 @@
-package com.barry.outside;
+package com.barry.outside.base;
 
 import android.content.Context;
 import android.database.ContentObserver;

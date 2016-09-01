@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.barry.outside.ColorUtils;
+import com.barry.outside.utils.ColorUtils;
 import com.barry.outside.R;
 
 import java.util.ArrayList;

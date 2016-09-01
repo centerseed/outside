@@ -8,26 +8,24 @@ import android.os.RemoteException;
 import android.util.Log;
 
 import com.barry.outside.R;
+import com.barry.outside.base.BaseJsonParser;
 import com.barry.outside.provider.WeatherProvider;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-/**
- * Created by Owner on 2015/11/13.
- */
 public class SiteParser extends BaseJsonParser {
 
     Uri uri;
 
     public SiteParser(Context context, ContentProviderClient provider) {
         super(context, provider);
-        uri = WeatherProvider.getProviderUri(context.getString(R.string.auth_provider_weather), WeatherProvider.TABLE_WEATHER);
+        uri = WeatherProvider.getProviderUri(context.getString(R.string.auth_provider_weather), WeatherProvider.TABLE_PM25);
     }
 
     @Override
-    void parse(JSONObject object) {
+    public void parse(JSONObject object) {
         if (null == object) {
             return;
         }

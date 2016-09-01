@@ -4,27 +4,15 @@ import android.accounts.Account;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SyncResult;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.RemoteException;
 import android.util.Log;
 
-import com.barry.outside.BroadcastConst;
 import com.barry.outside.ConnectBuilder;
-import com.barry.outside.R;
-import com.barry.outside.parser.SiteParser;
 import com.barry.outside.parser.pm25Parser;
-import com.barry.outside.parser.uvParser;
 import com.barry.outside.provider.WeatherProvider;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Created by Owner on 2015/11/13.
@@ -57,12 +45,7 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
                 .setOnResponseListener(new pm25Parser(getContext(), provider))
         .open();
 
-        connectBuilder.setMethod("GET")
-                .setUrl("http://opendata.epa.gov.tw/ws/Data/UV/?format=json")
-                .setOnResponseListener(new uvParser(getContext(), provider))
-                .open();
-
-        Uri uri = WeatherProvider.getProviderUri(authority, WeatherProvider.TABLE_WEATHER);
+        Uri uri = WeatherProvider.getProviderUri(authority, WeatherProvider.TABLE_PM25);
         Log.e(WeatherSyncAdapter.class.getName(), " Notify data change " + uri);
         contentResolver.notifyChange(uri, null);
     }
