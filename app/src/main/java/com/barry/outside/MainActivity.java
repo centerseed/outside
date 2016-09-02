@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity
             finish();
         }
 
+        AccountUtil.createDummyAccountIfNotExist(this);
         Account account = AccountUtil.getAccount(this);
         getContentResolver().setSyncAutomatically(account, mAuth, true);
         ContentResolver.addPeriodicSync(account, mAuth, Bundle.EMPTY, SYNC_PERIOD);

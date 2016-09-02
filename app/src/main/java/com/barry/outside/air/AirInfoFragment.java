@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Paint.Cap;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,20 +22,20 @@ import com.barry.outside.provider.WeatherProvider;
 import com.barry.outside.utils.ColorUtils;
 import com.barry.outside.utils.LocationUtils;
 import com.barry.outside.utils.PreferenceUtils;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-
-import java.util.ArrayList;
 
 import at.grabner.circleprogress.CircleProgressView;
 
 public class AirInfoFragment extends BroadcastFragment {
 
     CircleProgressView mCircleProgress;
-    TextView mSite;
     Location mLocation;
+    TextView mPSI;
+    TextView mPM25;
+    TextView mPM10;
+    TextView mO3;
+    TextView mCO;
+    TextView mTime;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -49,13 +47,18 @@ public class AirInfoFragment extends BroadcastFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mSite = (TextView) view.findViewById(R.id.site);
-
         mCircleProgress = (CircleProgressView) view.findViewById(R.id.circleProgress);
         mCircleProgress.setContourSize(0);
         mCircleProgress.setBlockCount(20);
         mCircleProgress.setMaxValue(72f);
-        mCircleProgress.setRimColor(Color.LTGRAY);
+        mCircleProgress.setRimColor(getResources().getColor(R.color.color_grey));
+
+        mPSI = (TextView) view.findViewById(R.id.psi);
+        mPM25 = (TextView) view.findViewById(R.id.pm25);
+        mPM10 = (TextView) view.findViewById(R.id.pm10);
+        mO3 = (TextView) view.findViewById(R.id.o3);
+        mCO = (TextView) view.findViewById(R.id.co);
+        mTime = (TextView) view.findViewById(R.id.time);
 
         mLocation = PreferenceUtils.getLastLocation(getContext());
     }
@@ -96,11 +99,18 @@ public class AirInfoFragment extends BroadcastFragment {
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         if (cursor != null && cursor.moveToFirst()) {
-            ArrayList<SiteInfo> infos = LocationUtils.getNearestSiteArray(cursor, mLocation);
-            mSite.setText(infos.get(0).getName());
-            mCircleProgress.setValueAnimated(infos.get(0).getPm25() * 72/100f);
+            SiteInfo info = LocationUtils.getNearestSiteArray(cursor, mLocation).get(0);
+            mCircleProgress.setValueAnimated(info.getPm25() * 72 / 100f);
+            mCircleProgress.setBarColor(ColorUtils.getPM25Color(getContext(), info.getPm25()));
 
-            ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(getString(R.string.app_name) + " - " + infos.get(0).getName());
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.app_name) + " - " + info.getName());
+
+            mPSI.setText(info.getPSI() + "");
+            mPM25.setText(info.getPm25() + "");
+            mPM10.setText(info.getPm10() + "");
+            mCO.setText(info.getCO() + "");
+            mO3.setText(info.getO3() + "");
+            mTime.setText(info.getUpdateTime());
         }
     }
 

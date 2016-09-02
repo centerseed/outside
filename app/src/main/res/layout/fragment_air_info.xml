@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
@@ -18,16 +18,120 @@
             android:id="@+id/circleProgress"
             app:cpv_textSize="28dp"
             android:layout_gravity="center_vertical"
-            android:layout_margin="16dp" />
+            android:layout_margin="32dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="松山"
-            android:id="@+id/site"
-            android:layout_gravity="center"
-            android:layout_margin="8dp" />
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/PSI"
+                android:id="@+id/textView23"
+                android:layout_margin="4dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/pm25"
+                android:id="@+id/textView24"
+                android:layout_margin="4dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/pm10"
+                android:id="@+id/textView25"
+                android:layout_margin="4dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/O3"
+                android:id="@+id/textView26"
+                android:layout_margin="4dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/CO"
+                android:id="@+id/textView27"
+                android:layout_margin="4dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="0.0"
+                android:id="@+id/psi"
+                android:layout_margin="4dp"
+                android:layout_gravity="center_vertical|right" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="0.0"
+                android:id="@+id/pm25"
+                android:layout_margin="4dp"
+                android:layout_gravity="center_vertical|right" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="0.0"
+                android:id="@+id/pm10"
+                android:layout_margin="4dp"
+                android:layout_gravity="center_vertical|right" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="0.0"
+                android:id="@+id/o3"
+                android:layout_margin="4dp"
+                android:layout_gravity="center_vertical|right" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="0.0"
+                android:id="@+id/co"
+                android:layout_margin="4dp"
+                android:layout_gravity="center_vertical|right" />
+        </LinearLayout>
+
     </LinearLayout>
 
-</LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="time"
+        android:id="@+id/time"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="8dp"
+        android:textSize="12dp" />
+
+</FrameLayout>

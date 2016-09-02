@@ -2,6 +2,11 @@
     <string name="app_name">OutSide</string>title_stock_provider
     <string name="title_weather_provider">觀測資料</string>
     <string name="pm25">PM2.5</string>
+    <string name="pm10">PM10</string>
+    <string name="CO">一氧化碳</string>
+    <string name="NO">一氧化氮</string>
+    <string name="O3">臭氧</string>
+    <string name="PSI">空污指標</string>
     <string name="uv">紫外線</string>
     <string name="setting">設定</string>
     <string name="location">現在位置：</string>

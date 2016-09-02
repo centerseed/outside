@@ -62,8 +62,7 @@ public class AirRankingFragment extends Fragment implements LoaderManager.Loader
         CursorLoader cl = new CursorLoader(getActivity());
         cl.setUri(contentUri);
         cl.setSortOrder(WeatherProvider.FIELD_PM25 + " DESC, " + WeatherProvider.FIELD_COUNTRY + " ASC");
-        Log.e(AirFragment.class.getName(), "onCreateLoader " + cl);
-
+       
         return cl;
     }
 

@@ -11,9 +11,6 @@ import com.barry.outside.base.AbstractRecyclerCursorAdapter;
 import com.barry.outside.utils.ColorUtils;
 import com.barry.outside.R;
 
-/**
- * Created by Mac on 15/12/4.
- */
 public class SiteCursorAdapter extends AbstractRecyclerCursorAdapter {
 
     Context context;
@@ -31,7 +28,7 @@ public class SiteCursorAdapter extends AbstractRecyclerCursorAdapter {
         siteViewHolder.tvName.setText(info.getName());
         siteViewHolder.tvCountry.setText(info.getCountry());
         siteViewHolder.tvPM25.setText(info.getPm25() + "");
-        siteViewHolder.tvPM25.setTextColor(ColorUtils.getColor(context, info.getPm25()));
+        siteViewHolder.tvPM25.setTextColor(ColorUtils.getPM25Color(context, info.getPm25()));
     }
 
     @Override

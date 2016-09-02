@@ -12,12 +12,10 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.barry.outside.BroadcastConst;
 import com.barry.outside.R;
 import com.barry.outside.base.BroadcastFragment;
-import com.barry.outside.base.ContentFragment;
 import com.barry.outside.provider.WeatherProvider;
 import com.barry.outside.utils.ColorUtils;
 import com.barry.outside.utils.LocationUtils;
@@ -64,12 +62,20 @@ public class AirMapFragment extends BroadcastFragment implements OnMapReadyCallb
     @Override
     public void addIntentFilter(IntentFilter filter) {
         filter.addAction(BroadcastConst.BROADCAST_GET_LOCATION + "");
+        filter.addAction(BroadcastConst.BROADCAST_COLLAPSE + "");
+        filter.addAction(BroadcastConst.BROADCAST_EXPAND + "");
     }
 
     @Override
     public void onReceiveBroadcast(int action, Intent intent) {
-        if (action == BroadcastConst.BROADCAST_GET_LOCATION) {
+        if (action == BroadcastConst.BROADCAST_COLLAPSE && mMap != null) {
+            Location location = PreferenceUtils.getLastLocation(getContext());
+            moveCamera(7, location);
+        }
 
+        if (action == BroadcastConst.BROADCAST_EXPAND && mMap != null) {
+            Location location = PreferenceUtils.getLastLocation(getContext());
+            moveCamera(10, location);
         }
     }
 
@@ -92,7 +98,7 @@ public class AirMapFragment extends BroadcastFragment implements OnMapReadyCallb
 
             for (int i = 0; i < infos.size(); i++) {
                 SiteInfo info = infos.get(i);
-                BitmapDescriptor icon = getMarkerIcon(ColorUtils.getColor(getContext(), info.getPm25()));
+                BitmapDescriptor icon = getMarkerIcon(ColorUtils.getPM25Color(getContext(), info.getPm25()));
                 MarkerOptions options = new MarkerOptions().position(info.getLatlng()).title(info.getName()).icon(icon).snippet(info.getPm25() + "");
 
                 if (i == 0)
@@ -114,12 +120,7 @@ public class AirMapFragment extends BroadcastFragment implements OnMapReadyCallb
         mMap.setOnMarkerClickListener(this);
 
         Location location = PreferenceUtils.getLastLocation(getContext());
-        CameraPosition cameraPosition =
-                new CameraPosition.Builder()
-                        .target(new LatLng(location.getLatitude(), location.getLongitude()))
-                        .zoom(10)
-                        .build();
-        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        moveCamera(10, location);
     }
 
     public BitmapDescriptor getMarkerIcon(int color) {
@@ -131,10 +132,26 @@ public class AirMapFragment extends BroadcastFragment implements OnMapReadyCallb
     @Override
     public boolean onMarkerClick(Marker marker) {
         LatLng latLng = marker.getPosition();
+
+        Location location = new Location("");
+        location.setLatitude(latLng.latitude);
+        location.setLongitude(latLng.longitude);
+        PreferenceUtils.setLastCLocation(getContext(), location);
+
         Intent intent = new Intent();
         intent.setAction(BroadcastConst.BROADCAST_GET_LOCATION + "");
         intent.putExtra("location", latLng);
         getActivity().sendBroadcast(intent);
         return false;
     }
+
+    private void moveCamera(float zoom, Location location) {
+        CameraPosition cameraPosition =
+                new CameraPosition.Builder()
+                        .target(new LatLng(location.getLatitude(), location.getLongitude()))
+                        .zoom(zoom)
+                        .build();
+        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+    }
+
 }
