@@ -17,6 +17,7 @@ import com.barry.outside.BroadcastConst;
 import com.barry.outside.R;
 import com.barry.outside.base.BroadcastFragment;
 import com.barry.outside.provider.WeatherProvider;
+import com.barry.outside.utils.BroadCastUtils;
 import com.barry.outside.utils.ColorUtils;
 import com.barry.outside.utils.LocationUtils;
 import com.barry.outside.utils.PreferenceUtils;
@@ -68,6 +69,12 @@ public class AirMapFragment extends BroadcastFragment implements OnMapReadyCallb
 
     @Override
     public void onReceiveBroadcast(int action, Intent intent) {
+        if (action == BroadcastConst.BROADCAST_GET_LOCATION) {
+            mLocation = intent.getParcelableExtra("location");
+            getLoaderManager().restartLoader(0, null, this);
+            moveCamera(10, mLocation);
+        }
+
         if (action == BroadcastConst.BROADCAST_COLLAPSE && mMap != null) {
             Location location = PreferenceUtils.getLastLocation(getContext());
             moveCamera(7, location);
@@ -138,10 +145,7 @@ public class AirMapFragment extends BroadcastFragment implements OnMapReadyCallb
         location.setLongitude(latLng.longitude);
         PreferenceUtils.setLastCLocation(getContext(), location);
 
-        Intent intent = new Intent();
-        intent.setAction(BroadcastConst.BROADCAST_GET_LOCATION + "");
-        intent.putExtra("location", latLng);
-        getActivity().sendBroadcast(intent);
+        BroadCastUtils.sendParcelableBroadcast(getActivity(), BroadcastConst.BROADCAST_GET_LOCATION, "location", location);
         return false;
     }
 

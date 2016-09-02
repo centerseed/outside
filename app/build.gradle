@@ -44,4 +44,5 @@ dependencies {
     compile 'com.google.android.gms:play-services:8.4.0'
     compile 'com.github.jakob-grabner:Circle-Progress-View:v1.2.9'
     compile 'com.android.support:support-v4:24.1.0'
+    compile 'com.wang.avi:library:2.1.3'
 }

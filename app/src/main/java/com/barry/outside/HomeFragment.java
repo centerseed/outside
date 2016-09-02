@@ -1,13 +1,20 @@
 package com.barry.outside;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,8 +29,10 @@ import android.widget.ImageView;
 
 import com.barry.outside.air.AirInfoFragment;
 import com.barry.outside.air.AirMapFragment;
+import com.barry.outside.utils.BroadCastUtils;
 
 public class HomeFragment extends Fragment {
+    public static int REQUEST_GET_LOCATION_PREMISSION = 10000;
     FrameLayout mAirInfo;
     FrameLayout mMapInfo;
     ImageView mDrag;
@@ -33,11 +42,14 @@ public class HomeFragment extends Fragment {
     TranslateAnimation mCollapse;
     RotateAnimation mRotateToInverse;
     RotateAnimation mRotateToOrigin;
+    LoadingView mLoading;
 
     float mMapPosition;
     int mOriginHeight;
     int mScreenHeight;
     int mToolbarHeight;
+
+    LocationManager mLocationManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,6 +64,8 @@ public class HomeFragment extends Fragment {
 
         mAirInfo = (FrameLayout) view.findViewById(R.id.containerAirInfo);
         mMapInfo = (FrameLayout) view.findViewById(R.id.mapInfo);
+
+        mLoading = (LoadingView) view.findViewById(R.id.loading);
 
         mDrag = (ImageView) view.findViewById(R.id.drag);
         mDrag.setEnabled(false);
@@ -99,7 +113,18 @@ public class HomeFragment extends Fragment {
                 prepareAnimation();
                 mDrag.setEnabled(true);
             }
-        }, 2000);
+        }, 1000);
+
+        mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
+                    REQUEST_GET_LOCATION_PREMISSION);
+            return;
+        }
+
+        mLoading.setVisibility(View.VISIBLE);
+        mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
     }
 
     @Override
@@ -172,4 +197,26 @@ public class HomeFragment extends Fragment {
         intent.setAction(action + "");
         getActivity().sendBroadcast(intent);
     }
+
+    LocationListener locationListener = new LocationListener() {
+        public void onLocationChanged(Location location) {
+            Log.d("location", location.toString());
+
+            BroadCastUtils.sendParcelableBroadcast(getActivity(), BroadcastConst.BROADCAST_GET_LOCATION, "location", location);
+            mLoading.setVisibility(View.GONE);
+            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            mLocationManager.removeUpdates(locationListener);
+        }
+
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+        }
+
+        public void onProviderEnabled(String provider) {
+        }
+
+        public void onProviderDisabled(String provider) {
+        }
+    };
 }

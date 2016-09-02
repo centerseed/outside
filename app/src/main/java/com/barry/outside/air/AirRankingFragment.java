@@ -17,9 +17,6 @@ import android.view.ViewGroup;
 import com.barry.outside.R;
 import com.barry.outside.provider.WeatherProvider;
 
-/**
- * Created by Mac on 15/12/4.
- */
 public class AirRankingFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     Uri contentUri;
@@ -62,7 +59,7 @@ public class AirRankingFragment extends Fragment implements LoaderManager.Loader
         CursorLoader cl = new CursorLoader(getActivity());
         cl.setUri(contentUri);
         cl.setSortOrder(WeatherProvider.FIELD_PM25 + " DESC, " + WeatherProvider.FIELD_COUNTRY + " ASC");
-       
+
         return cl;
     }
 

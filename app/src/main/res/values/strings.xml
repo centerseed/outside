@@ -11,7 +11,7 @@
     <string name="setting">設定</string>
     <string name="location">現在位置：</string>
     <string name="choose_country">選擇縣市</string>
-    <string name="localizing">取得位置</string>
+    <string name="localizing">正在更新目前位置...</string>
     <string name="auto_localizing">自動取得位置</string>
     <string name="update_time">更新時間:</string>
     <string name="update_site">更新測站資料</string>

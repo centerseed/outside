@@ -51,17 +51,4 @@ abstract public class BroadcastFragment extends ContentFragment {
 
     public abstract void addIntentFilter(IntentFilter filter);
     public abstract void onReceiveBroadcast(int action, Intent intent);
-
-    protected void sendBroadCastParcelable(int action) {
-        Intent intent = new Intent();
-        intent.setAction(action + "");
-        getActivity().sendBroadcast(intent);
-    }
-
-    protected void sendBroadCastParcelable(int action, String extraName, Parcelable obj) {
-        Intent intent = new Intent();
-        intent.setAction(action + "");
-        intent.putExtra("extraName", obj);
-        getActivity().sendBroadcast(intent);
-    }
 }

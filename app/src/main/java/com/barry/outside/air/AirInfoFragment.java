@@ -79,9 +79,9 @@ public class AirInfoFragment extends BroadcastFragment {
         if (action == BroadcastConst.BROADCAST_GET_LOCATION) {
             getLoaderManager().restartLoader(0, null, this);
 
-            LatLng latlng = intent.getParcelableExtra("location");
-            mLocation.setLongitude(latlng.longitude);
-            mLocation.setLatitude(latlng.latitude);
+            Location location = intent.getParcelableExtra("location");
+            mLocation.setLongitude(location.getLongitude());
+            mLocation.setLatitude(location.getLatitude());
         }
     }
 
