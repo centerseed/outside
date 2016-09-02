@@ -5,20 +5,24 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.view.View;
+import android.widget.AdapterView;
 
 
 import com.barry.outside.R;
+import com.barry.outside.utils.LocationUtils;
 
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Created by Mac on 15/11/18.
- */
 public class chooseCountyFragmentDialog extends DialogFragment {
 
     public static final String ARG_CURR_LOCATION = "_arg_curr_location";
     OnSelectedListener selectedListener;
+
+    public interface OnSelectedListener {
+        void onSelected(String location);
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle saveInstanceState) {
@@ -27,22 +31,12 @@ public class chooseCountyFragmentDialog extends DialogFragment {
         builder.setTitle(R.string.choose_country);
 
         List<String> countrys = Arrays.asList(getContext().getResources().getStringArray(R.array.country));
-        int position = countrys.indexOf(getArgCurrLocation());
 
-        builder.setSingleChoiceItems(R.array.country, position, null);
-
-        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+        builder.setSingleChoiceItems(R.array.country, 0, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-
-                int position =  ((AlertDialog)getDialog()).getListView().getCheckedItemPosition();
-                if (position == -1) {
-                    dismiss();
-                    return;
-                }
-
-                String location = (String) ((AlertDialog)getDialog()).getListView().getAdapter().getItem(position);
                 if (null != selectedListener) {
+                    String location = (String) ((AlertDialog)getDialog()).getListView().getAdapter().getItem(i);
                     selectedListener.onSelected(location);
                 }
                 dismiss();
@@ -52,15 +46,7 @@ public class chooseCountyFragmentDialog extends DialogFragment {
         return builder.create();
     }
 
-    public interface OnSelectedListener {
-        void onSelected(String location);
-    }
-
     public void setSelectedListener(OnSelectedListener listener) {
         selectedListener = listener;
-    }
-
-    private String getArgCurrLocation() {
-        return getArguments().getString(ARG_CURR_LOCATION);
     }
 }

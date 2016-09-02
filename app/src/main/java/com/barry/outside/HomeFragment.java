@@ -30,13 +30,16 @@ import android.widget.ImageView;
 import com.barry.outside.air.AirInfoFragment;
 import com.barry.outside.air.AirMapFragment;
 import com.barry.outside.utils.BroadCastUtils;
+import com.barry.outside.utils.LocationUtils;
+import com.barry.outside.utils.PreferenceUtils;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements chooseCountyFragmentDialog.OnSelectedListener {
     public static int REQUEST_GET_LOCATION_PREMISSION = 10000;
     FrameLayout mAirInfo;
     FrameLayout mMapInfo;
     ImageView mDrag;
 
+    boolean isFirstLoad = true;
     boolean isCollapse = false;
     TranslateAnimation mExpand;
     TranslateAnimation mCollapse;
@@ -50,6 +53,7 @@ public class HomeFragment extends Fragment {
     int mToolbarHeight;
 
     LocationManager mLocationManager;
+    chooseCountyFragmentDialog mFragmentDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,6 +65,9 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        mFragmentDialog = new chooseCountyFragmentDialog();
+        mFragmentDialog.setSelectedListener(this);
 
         mAirInfo = (FrameLayout) view.findViewById(R.id.containerAirInfo);
         mMapInfo = (FrameLayout) view.findViewById(R.id.mapInfo);
@@ -107,13 +114,16 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        mAirInfo.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                prepareAnimation();
-                mDrag.setEnabled(true);
-            }
-        }, 1000);
+        if (isFirstLoad) {
+            isFirstLoad = false;
+            mAirInfo.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    prepareAnimation();
+                    mDrag.setEnabled(true);
+                }
+            }, 1000);
+        }
 
         mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
@@ -128,6 +138,15 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        mLocationManager.removeUpdates(locationListener);
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_main, menu);
     }
@@ -136,6 +155,7 @@ public class HomeFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_localization) {
+            mFragmentDialog.show(getChildFragmentManager(), "");
         }
         return super.onOptionsItemSelected(item);
     }
@@ -219,4 +239,10 @@ public class HomeFragment extends Fragment {
         public void onProviderDisabled(String provider) {
         }
     };
+
+    @Override
+    public void onSelected(String location) {
+        Location lo = LocationUtils.getLocationByName(getContext(), location);
+        BroadCastUtils.sendParcelableBroadcast(getActivity(), BroadcastConst.BROADCAST_GET_LOCATION, "location", lo);
+    }
 }
