@@ -10,7 +10,7 @@ import android.preference.PreferenceManager;
  */
 public class PreferenceUtils {
 
-    public static void setLastCLocation(Context context, Location location) {
+    public static void setLastLocation(Context context, Location location) {
         PreferenceManager.getDefaultSharedPreferences(context).edit().putFloat("last_lat", (float) location.getLatitude()).commit();
         PreferenceManager.getDefaultSharedPreferences(context).edit().putFloat("last_lng", (float) location.getLongitude()).commit();
     }

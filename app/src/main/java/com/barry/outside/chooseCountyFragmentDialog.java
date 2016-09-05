@@ -5,12 +5,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.view.View;
-import android.widget.AdapterView;
-
-
-import com.barry.outside.R;
-import com.barry.outside.utils.LocationUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -36,14 +30,16 @@ public class chooseCountyFragmentDialog extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (null != selectedListener) {
-                    String location = (String) ((AlertDialog)getDialog()).getListView().getAdapter().getItem(i);
+                    String location = (String) ((AlertDialog) getDialog()).getListView().getAdapter().getItem(i);
                     selectedListener.onSelected(location);
                 }
                 dismiss();
             }
         });
 
-        return builder.create();
+        Dialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(true);
+        return dialog;
     }
 
     public void setSelectedListener(OnSelectedListener listener) {

@@ -26,6 +26,10 @@
     <string name="title_activity_init">InitActivity</string>
     <string name="title_activity_maps">Map</string>
 
+    <string name="hint_change_order">變換排序方式</string>
+    <string name="hint_get_position">取得目前位置</string>
+    <string name="hint_choose_position">選擇區域</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_main">MainActivity</string>

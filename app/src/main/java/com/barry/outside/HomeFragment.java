@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -26,6 +27,7 @@ import android.view.animation.RotateAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.barry.outside.air.AirInfoFragment;
 import com.barry.outside.air.AirMapFragment;
@@ -46,6 +48,8 @@ public class HomeFragment extends Fragment implements chooseCountyFragmentDialog
     RotateAnimation mRotateToInverse;
     RotateAnimation mRotateToOrigin;
     LoadingView mLoading;
+    MenuItem mLocalize;
+    MenuItem mChoosePositon;
 
     float mMapPosition;
     int mOriginHeight;
@@ -73,6 +77,7 @@ public class HomeFragment extends Fragment implements chooseCountyFragmentDialog
         mMapInfo = (FrameLayout) view.findViewById(R.id.mapInfo);
 
         mLoading = (LoadingView) view.findViewById(R.id.loading);
+        mLoading.setVisibility(View.GONE);
 
         mDrag = (ImageView) view.findViewById(R.id.drag);
         mDrag.setEnabled(false);
@@ -87,11 +92,15 @@ public class HomeFragment extends Fragment implements chooseCountyFragmentDialog
                     animation = mExpand;
                     rotateAnimation = mRotateToOrigin;
                     sendBroadCast(BroadcastConst.BROADCAST_EXPAND);
+                    mLocalize.setVisible(true);
+                    mChoosePositon.setVisible(true);
                 } else {
                     params.height = mScreenHeight;
                     animation = mCollapse;
                     rotateAnimation = mRotateToInverse;
                     sendBroadCast(BroadcastConst.BROADCAST_COLLAPSE);
+                    mLocalize.setVisible(false);
+                    mChoosePositon.setVisible(false);
                 }
                 mMapInfo.setAnimation(animation);
                 animation.setDuration(800);
@@ -109,6 +118,8 @@ public class HomeFragment extends Fragment implements chooseCountyFragmentDialog
 
         AirMapFragment mapFragment = new AirMapFragment();
         getChildFragmentManager().beginTransaction().replace(R.id.containerMap, mapFragment, null).commit();
+
+        mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
     }
 
     @Override
@@ -125,16 +136,31 @@ public class HomeFragment extends Fragment implements chooseCountyFragmentDialog
             }, 1000);
         }
 
-        mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
                     REQUEST_GET_LOCATION_PREMISSION);
             return;
         }
 
-        mLoading.setVisibility(View.VISIBLE);
-        mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+        if (PreferenceUtils.getAutoLocalize(getContext())) {
+            mLoading.setVisibility(View.VISIBLE);
+
+            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            final Location lastLocation = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            if (lastLocation != null) {
+                mAirInfo.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mLoading.setVisibility(View.GONE);
+                        BroadCastUtils.sendParcelableBroadcast(getActivity(), BroadcastConst.BROADCAST_GET_LOCATION, "location", lastLocation);
+                    }
+                }, 1000);
+            }
+
+            mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+        }
     }
 
     @Override
@@ -149,6 +175,8 @@ public class HomeFragment extends Fragment implements chooseCountyFragmentDialog
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_main, menu);
+        mLocalize = menu.findItem(R.id.action_update_position);
+        mChoosePositon =  menu.findItem(R.id.action_localization);
     }
 
     @Override
@@ -157,6 +185,15 @@ public class HomeFragment extends Fragment implements chooseCountyFragmentDialog
         if (id == R.id.action_localization) {
             mFragmentDialog.show(getChildFragmentManager(), "");
         }
+
+        if (id == R.id.action_update_position) {
+            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return super.onOptionsItemSelected(item);
+            }
+            Location lastLocation = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            BroadCastUtils.sendParcelableBroadcast(getActivity(), BroadcastConst.BROADCAST_GET_LOCATION, "location", lastLocation);
+            mLocationManager.requestLocationUpdates(getProviderName(), 0, 0, locationListener);
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -164,7 +201,12 @@ public class HomeFragment extends Fragment implements chooseCountyFragmentDialog
         mMapPosition = mMapInfo.getTop();
         mOriginHeight = mMapInfo.getMeasuredHeight();
         mToolbarHeight = ((AppCompatActivity) getActivity()).getSupportActionBar().getHeight();
-        mScreenHeight = Resources.getSystem().getDisplayMetrics().heightPixels - mToolbarHeight - getSoftButtonsBarHeight() + getStatusBarHeight(getContext());
+
+        int softHeight = getSoftButtonsBarHeight();
+        if (softHeight == 0)
+            mScreenHeight = Resources.getSystem().getDisplayMetrics().heightPixels - 2 * mToolbarHeight - getSoftButtonsBarHeight() + getStatusBarHeight(getContext());
+        else
+            mScreenHeight = Resources.getSystem().getDisplayMetrics().heightPixels - mToolbarHeight - getSoftButtonsBarHeight() + getStatusBarHeight(getContext());
 
         mCollapse = new TranslateAnimation(0, 0, mMapPosition, 0);
         mExpand = new TranslateAnimation(0, 0, -mMapPosition, 0);
@@ -221,6 +263,7 @@ public class HomeFragment extends Fragment implements chooseCountyFragmentDialog
     LocationListener locationListener = new LocationListener() {
         public void onLocationChanged(Location location) {
             Log.d("location", location.toString());
+            PreferenceUtils.setLastLocation(getContext(), location);
 
             BroadCastUtils.sendParcelableBroadcast(getActivity(), BroadcastConst.BROADCAST_GET_LOCATION, "location", location);
             mLoading.setVisibility(View.GONE);
@@ -243,6 +286,24 @@ public class HomeFragment extends Fragment implements chooseCountyFragmentDialog
     @Override
     public void onSelected(String location) {
         Location lo = LocationUtils.getLocationByName(getContext(), location);
-        BroadCastUtils.sendParcelableBroadcast(getActivity(), BroadcastConst.BROADCAST_GET_LOCATION, "location", lo);
+        PreferenceUtils.setLastLocation(getContext(), lo);
+        BroadCastUtils.sendParcelableBroadcast(getActivity(), BroadcastConst.BROADCAST_SELECT_LOCATION, "location", lo);
+    }
+
+    String getProviderName() {
+        LocationManager locationManager = (LocationManager) getActivity()
+                .getSystemService(Context.LOCATION_SERVICE);
+
+        Criteria criteria = new Criteria();
+        criteria.setPowerRequirement(Criteria.POWER_LOW); // Chose your desired power consumption level.
+        criteria.setAccuracy(Criteria.ACCURACY_COARSE); // Choose your accuracy requirement.
+        criteria.setSpeedRequired(true); // Chose if speed for first location fix is required.
+        criteria.setAltitudeRequired(false); // Choose if you use altitude.
+        criteria.setBearingRequired(false); // Choose if you use bearing.
+        criteria.setCostAllowed(true); // Choose if this provider can waste money :-)
+
+        // Provide your criteria and flag enabledOnly that tells
+        // LocationManager only to return active providers.
+        return locationManager.getBestProvider(criteria, true);
     }
 }

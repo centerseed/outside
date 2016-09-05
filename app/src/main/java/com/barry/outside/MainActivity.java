@@ -19,11 +19,15 @@ import com.barry.outside.account.AccountUtil;
 import com.barry.outside.air.AirRankingFragment;
 import com.barry.outside.provider.WeatherProvider;
 
+import java.util.Stack;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     final long SYNC_PERIOD = 50L * 60L;
     String mAuth;
+    Stack<Integer> mFragmentStack;
+    NavigationView mNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +42,8 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+        mNavigationView.setNavigationItemSelectedListener(this);
 
         mAuth = getString(R.string.auth_provider_weather);
         Uri uri = WeatherProvider.getProviderUri(mAuth, WeatherProvider.TABLE_PM25);
@@ -56,8 +60,9 @@ public class MainActivity extends AppCompatActivity
         getContentResolver().setSyncAutomatically(account, mAuth, true);
         ContentResolver.addPeriodicSync(account, mAuth, Bundle.EMPTY, SYNC_PERIOD);
 
-        HomeFragment f = new HomeFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, f, null).commit();
+        mFragmentStack = new Stack<>();
+        onNavigationItemSelected(mNavigationView.getMenu().getItem(0));
+        mNavigationView.getMenu().getItem(0).setChecked(true);
     }
 
     @Override
@@ -75,15 +80,37 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
+        }
+
+        if (mFragmentStack.size() == 1) {
             super.onBackPressed();
+        } else {
+            mFragmentStack.pop();
+            int id = mFragmentStack.pop();
+            if (id == R.id.nav_home) {
+                mNavigationView.getMenu().getItem(0).setChecked(true);
+            } else if (id == R.id.nav_ranking) {
+                mNavigationView.getMenu().getItem(1).setChecked(true);
+            } else if (id == R.id.nav_setting) {
+                mNavigationView.getMenu().getItem(2).setChecked(true);
+            }
+            replaceFragmentById(id);
+            mFragmentStack.push(id);
         }
     }
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
+        replaceFragmentById(id);
+        mFragmentStack.push(id);
 
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    private void replaceFragmentById(int id) {
         Fragment f = null;
         if (id == R.id.nav_home) {
             f = new HomeFragment();
@@ -97,11 +124,8 @@ public class MainActivity extends AppCompatActivity
             f = new SettingFragment();
         }
 
-        if (f != null)
+        if (f != null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, f).commit();
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
+        }
     }
 }

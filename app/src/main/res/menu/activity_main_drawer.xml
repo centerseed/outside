@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/menu_g1"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_menu_send"
             android:title="Home" />
+    </group>
+    <group
+        android:id="@+id/menu_g2"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_ranking"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@mipmap/ic_report"
             android:title="排行榜" />
+    </group>
+    <group
+        android:id="@+id/menu_g3"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_setting"
             android:icon="@drawable/ic_menu_manage"

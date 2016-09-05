@@ -9,4 +9,6 @@ public class BroadcastConst {
     public static final int BROADCAST_GET_SITEINFO = 2;
     public static final int BROADCAST_EXPAND = 3;
     public static final int BROADCAST_COLLAPSE = 4;
+    public static final int BROADCAST_SELECT_LOCATION = 5;
+    public static final int BROADCAST_CLICK_MAP_POS = 6;
 }

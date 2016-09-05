@@ -3,9 +3,15 @@
     xmlns:add="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/action_update_position"
+        android:icon="@mipmap/ic_gps_fixed_white_24dp"
+        android:title="@string/hint_get_position"
+        add:showAsAction="always" />
+
+    <item
         android:id="@+id/action_localization"
-        android:icon="@android:drawable/ic_menu_compass"
-        android:title="@string/localizing"
+        android:icon="@mipmap/ic_location"
+        android:title="@string/hint_choose_position"
         add:showAsAction="always" />
 
 </menu>

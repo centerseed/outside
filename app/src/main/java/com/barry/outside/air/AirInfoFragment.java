@@ -3,7 +3,6 @@ package com.barry.outside.air;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,7 +21,6 @@ import com.barry.outside.provider.WeatherProvider;
 import com.barry.outside.utils.ColorUtils;
 import com.barry.outside.utils.LocationUtils;
 import com.barry.outside.utils.PreferenceUtils;
-import com.google.android.gms.maps.model.LatLng;
 
 import at.grabner.circleprogress.CircleProgressView;
 
@@ -52,6 +50,8 @@ public class AirInfoFragment extends BroadcastFragment {
         mCircleProgress.setBlockCount(20);
         mCircleProgress.setMaxValue(72f);
         mCircleProgress.setRimColor(getResources().getColor(R.color.color_grey));
+        mCircleProgress.setUnit(" ");
+        mCircleProgress.setUnitVisible(true);
 
         mPSI = (TextView) view.findViewById(R.id.psi);
         mPM25 = (TextView) view.findViewById(R.id.pm25);
@@ -72,16 +72,20 @@ public class AirInfoFragment extends BroadcastFragment {
     @Override
     public void addIntentFilter(IntentFilter filter) {
         filter.addAction(BroadcastConst.BROADCAST_GET_LOCATION + "");
+        filter.addAction(BroadcastConst.BROADCAST_SELECT_LOCATION + "");
+        filter.addAction(BroadcastConst.BROADCAST_CLICK_MAP_POS + "");
     }
 
     @Override
     public void onReceiveBroadcast(int action, Intent intent) {
-        if (action == BroadcastConst.BROADCAST_GET_LOCATION) {
-            getLoaderManager().restartLoader(0, null, this);
+        if (action == BroadcastConst.BROADCAST_GET_LOCATION ||
+                action == BroadcastConst.BROADCAST_SELECT_LOCATION ||
+                action == BroadcastConst.BROADCAST_CLICK_MAP_POS) {
 
             Location location = intent.getParcelableExtra("location");
             mLocation.setLongitude(location.getLongitude());
             mLocation.setLatitude(location.getLatitude());
+            getLoaderManager().restartLoader(0, null, this);
         }
     }
 

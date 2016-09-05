@@ -12,19 +12,40 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical">
 
-        <at.grabner.circleprogress.CircleProgressView
-            android:layout_width="140dp"
-            android:layout_height="140dp"
-            android:id="@+id/circleProgress"
-            app:cpv_textSize="28dp"
-            android:layout_gravity="center_vertical"
-            android:layout_margin="32dp" />
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="32dp">
+
+            <at.grabner.circleprogress.CircleProgressView
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:id="@+id/circleProgress"
+                app:cpv_textSize="32dp"
+                app:cpv_unitSize="14dp"
+                app:cpv_unitPosition="bottom"
+                app:cpv_rimWidth="18dp"
+                app:cpv_barWidth="18dp"
+                android:layout_gravity="center_vertical" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="pm2.5"
+                android:id="@+id/textView"
+                android:layout_gravity="center"
+                android:layout_marginTop="28dp" />
+        </FrameLayout>
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="1.4"
             android:layout_gravity="center_vertical">
 
             <TextView

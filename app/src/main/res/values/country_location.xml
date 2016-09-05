@@ -4,7 +4,6 @@
         <item>臺北市</item>
         <item>新北市</item>
         <item>桃園市</item>
-        <item>新竹市</item>
         <item>新竹縣</item>
         <item>苗栗縣</item>
         <item>臺中市</item>
@@ -25,41 +24,39 @@
         <item>25.0329636</item>
         <item>25.0169826</item>
         <item>24.9936281</item>
-        <item>24.8138297</item>
         <item>24.8387226</item>
         <item>24.560159</item>
         <item>24.1477358</item>
         <item>24.0517963</item>
         <item>23.9609981</item>
         <item>23.7092033</item>
-        <item>23.4518428</item>
+        <item>23.4627780</item>
         <item>22.9998999</item>
         <item>22.6272784</item>
         <item>22.5519759</item>
         <item>24.7021073</item>
         <item>23.9871589</item>
         <item>22.7972447</item>
-        <item>25.1276033</item>
+        <item>25.1291670</item>
     </string-array>
 
     <string-array name="longitude">
         <item>121.5654268</item>
         <item>121.4627868</item>
         <item>121.3009798</item>
-        <item>120.9674752</item>
         <item>121.0177246</item>
         <item>120.8214265</item>
         <item>120.6736482</item>
         <item>120.5161352</item>
         <item>120.9718638</item>
         <item>120.4313373</item>
-        <item>120.2554615</item>
+        <item>120.4408330</item>
         <item>120.2268758</item>
         <item>120.3014353</item>
         <item>120.5487597</item>
         <item>121.7377502</item>
         <item>121.6015714</item>
         <item>121.0713702</item>
-        <item>121.7391833</item>
+        <item>121.7600560</item>
     </string-array>
 </resources>
