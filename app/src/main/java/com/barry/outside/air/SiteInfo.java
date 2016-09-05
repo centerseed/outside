@@ -7,9 +7,6 @@ import com.barry.outside.provider.WeatherProvider;
 import com.barry.outside.utils.LocationUtils;
 import com.google.android.gms.maps.model.LatLng;
 
-/**
- * Created by Mac on 15/11/20.
- */
 public class SiteInfo {
     String name;
     String country;

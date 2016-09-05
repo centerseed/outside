@@ -1,13 +1,8 @@
 package com.barry.outside.air;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.location.Location;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -15,7 +10,6 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,10 +17,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.barry.outside.BroadcastConst;
 import com.barry.outside.R;
 import com.barry.outside.provider.WeatherProvider;
-import com.barry.outside.utils.BroadCastUtils;
 
 public class AirRankingFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -85,6 +77,7 @@ public class AirRankingFragment extends Fragment implements LoaderManager.Loader
 
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         CursorLoader cl = new CursorLoader(getActivity());

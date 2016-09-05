@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.barry.outside.ConnectBuilder;
 import com.barry.outside.parser.pm25Parser;
 import com.barry.outside.provider.WeatherProvider;
 

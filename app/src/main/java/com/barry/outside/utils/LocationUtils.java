@@ -16,9 +16,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-/**
- * Created by Mac on 15/11/16.
- */
 public class LocationUtils {
     private static final double EARTH_RADIUS = 6378137.0;
 

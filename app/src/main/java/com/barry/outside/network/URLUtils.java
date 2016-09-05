@@ -1,4 +1,4 @@
-package com.barry.outside;
+package com.barry.outside.network;
 
 import android.content.ContentValues;
 

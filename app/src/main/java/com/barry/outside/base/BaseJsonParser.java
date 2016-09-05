@@ -5,8 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.barry.outside.ConnectBuilder;
-import com.barry.outside.URLUtils;
+import com.barry.outside.network.ConnectBuilder;
+import com.barry.outside.network.URLUtils;
 import com.barry.outside.network.WeatherSyncAdapter;
 
 import org.json.JSONException;

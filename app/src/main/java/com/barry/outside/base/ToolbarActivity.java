@@ -1,4 +1,4 @@
-package com.barry.outside;
+package com.barry.outside.base;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 
+import com.barry.outside.R;
 import com.barry.outside.network.WeatherSyncAdapter;
 
 public abstract class ToolbarActivity extends AppCompatActivity implements Toolbar.OnMenuItemClickListener {

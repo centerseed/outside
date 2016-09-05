@@ -1,4 +1,4 @@
-package com.barry.outside;
+package com.barry.outside.network;
 
 import android.accounts.Account;
 import android.content.ContentProviderClient;
@@ -11,7 +11,6 @@ import android.os.RemoteException;
 import android.util.Log;
 
 import com.barry.outside.provider.WeatherProvider;
-import com.barry.outside.network.WeatherSyncAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
