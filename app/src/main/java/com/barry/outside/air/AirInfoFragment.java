@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.barry.outside.BroadcastConst;
@@ -34,6 +35,12 @@ public class AirInfoFragment extends BroadcastFragment {
     TextView mO3;
     TextView mCO;
     TextView mTime;
+
+    ImageView mIconPSI;
+    ImageView mIconPM25;
+    ImageView mIconPM10;
+    ImageView mIconO3;
+    ImageView mIconCO;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,6 +66,12 @@ public class AirInfoFragment extends BroadcastFragment {
         mO3 = (TextView) view.findViewById(R.id.o3);
         mCO = (TextView) view.findViewById(R.id.co);
         mTime = (TextView) view.findViewById(R.id.time);
+
+        mIconPSI = (ImageView) view.findViewById(R.id.ic_psi);
+        mIconPM25 = (ImageView) view.findViewById(R.id.ic_pm25);
+        mIconPM10 = (ImageView) view.findViewById(R.id.ic_pm10);
+        mIconO3 = (ImageView) view.findViewById(R.id.ic_o3);
+        mIconCO = (ImageView) view.findViewById(R.id.ic_co);
 
         mLocation = PreferenceUtils.getLastLocation(getContext());
     }
@@ -115,6 +128,12 @@ public class AirInfoFragment extends BroadcastFragment {
             mCO.setText(info.getCO() + "");
             mO3.setText(info.getO3() + "");
             mTime.setText(info.getUpdateTime());
+
+            mIconPSI.setColorFilter(ColorUtils.getPSIColor(getContext(), (int) info.getPSI()));
+            mIconPM25.setColorFilter(ColorUtils.getPM25Color(getContext(), info.getPm25()));
+            mIconPM10.setColorFilter(ColorUtils.getPM10(getContext(), info.getPm10()));
+            mIconCO.setColorFilter(ColorUtils.getCO(getContext(), info.getCO()));
+            mIconO3.setColorFilter(ColorUtils.getO3(getContext(), info.getO3()));
         }
     }
 

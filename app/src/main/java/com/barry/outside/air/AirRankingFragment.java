@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -60,6 +61,8 @@ public class AirRankingFragment extends Fragment implements LoaderManager.Loader
     public void onResume() {
         super.onResume();
         getLoaderManager().initLoader(0, null, this);
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.pm25_rank));
     }
 
     @Override
