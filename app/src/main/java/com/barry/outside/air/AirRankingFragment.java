@@ -18,13 +18,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.barry.outside.R;
+import com.barry.outside.AirInfoTypeFragmentDialog;
 import com.barry.outside.provider.WeatherProvider;
 
-public class AirRankingFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class AirRankingFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,AirInfoTypeFragmentDialog.OnSelectedListener {
 
     Uri contentUri;
     SiteCursorAdapter adapter;
     boolean isASC = false;
+    int mAirInfoPos = 0;
+    String mAirInfos[];
+    String mProviderInfo[] = {WeatherProvider.FIELD_PM25, WeatherProvider.FIELD_PM10, WeatherProvider.FIELD_PSI, WeatherProvider.FIELD_O3, WeatherProvider.FIELD_CO};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,6 +44,7 @@ public class AirRankingFragment extends Fragment implements LoaderManager.Loader
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        mAirInfos = new String[]{getString(R.string.pm25), getString(R.string.pm10), getString(R.string.PSI), getString(R.string.O3), getString(R.string.CO)};
         setHasOptionsMenu(true);
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycleView);
@@ -54,7 +59,7 @@ public class AirRankingFragment extends Fragment implements LoaderManager.Loader
         super.onResume();
         getLoaderManager().initLoader(0, null, this);
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.pm25_rank));
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(mAirInfos[mAirInfoPos] + getString(R.string.rank));
     }
 
     @Override
@@ -74,6 +79,11 @@ public class AirRankingFragment extends Fragment implements LoaderManager.Loader
             isASC = !isASC;
             getLoaderManager().restartLoader(0, null, this);
         }
+        if (id == R.id.action_choose_airinfo_type) {
+            AirInfoTypeFragmentDialog f = AirInfoTypeFragmentDialog.getInstance(mAirInfoPos);
+            f.setSelectedListener(this);
+            f.show(getChildFragmentManager(), "");
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -83,9 +93,9 @@ public class AirRankingFragment extends Fragment implements LoaderManager.Loader
         CursorLoader cl = new CursorLoader(getActivity());
         cl.setUri(contentUri);
         if (isASC) {
-            cl.setSortOrder(WeatherProvider.FIELD_PM25 + " ASC, " + WeatherProvider.FIELD_COUNTRY + " ASC");
+            cl.setSortOrder(mProviderInfo[mAirInfoPos] + " ASC, " + WeatherProvider.FIELD_COUNTRY + " ASC");
         } else {
-            cl.setSortOrder(WeatherProvider.FIELD_PM25 + " DESC, " + WeatherProvider.FIELD_COUNTRY + " ASC");
+            cl.setSortOrder(mProviderInfo[mAirInfoPos] + " DESC, " + WeatherProvider.FIELD_COUNTRY + " ASC");
         }
 
         return cl;
@@ -103,6 +113,14 @@ public class AirRankingFragment extends Fragment implements LoaderManager.Loader
         if (adapter != null) {
             adapter.swapCursor(null);
         }
+    }
+
+    @Override
+    public void onSelected(int position) {
+        mAirInfoPos = position;
+        adapter.setInfoType(position);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(mAirInfos[mAirInfoPos] + getString(R.string.rank));
+        getLoaderManager().restartLoader(0, null, this);
     }
 }
 

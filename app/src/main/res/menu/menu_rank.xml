@@ -3,6 +3,11 @@
     xmlns:add="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/action_choose_airinfo_type"
+        android:icon="@mipmap/ic_toc_white_24dp"
+        android:title="@string/air_help"
+        add:showAsAction="always" />
+    <item
         android:id="@+id/action_swap_order"
         android:icon="@mipmap/ic_swap_vert_white_24dp"
         android:title="@string/hint_change_order"

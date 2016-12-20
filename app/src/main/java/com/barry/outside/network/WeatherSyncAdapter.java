@@ -40,7 +40,7 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
         ConnectBuilder connectBuilder = new ConnectBuilder(getContext());
         connectBuilder.setMethod("GET")
                // .setUrl("http://opendata.epa.gov.tw/webapi/api/rest/datastore/355000000I000001?sort=SiteName&format=json")
-                .setUrl("http://opendata.epa.gov.tw/ws/Data/AQX/?format=json")
+                .setUrl("http://opendata.epa.gov.tw/ws/Data/REWIQA/?$orderby=SiteName&$skip=0&$top=1000&format=json")
                 .setOnResponseListener(new pm25Parser(getContext(), provider))
         .open();
 

@@ -4,49 +4,47 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:baselineAligned="false">
+    android:baselineAligned="false"
+    android:background="@drawable/background">
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical">
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:background="@color/background">
 
         <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="32dp"
+            android:layout_marginLeft="24dp"
             android:layout_marginTop="32dp"
             android:layout_marginRight="16dp"
-            android:layout_marginBottom="32dp">
+            android:layout_marginBottom="32dp"
+            android:layout_gravity="center"
+            >
 
             <at.grabner.circleprogress.CircleProgressView
-                android:layout_width="140dp"
-                android:layout_height="140dp"
+                android:layout_width="132dp"
+                android:layout_height="132dp"
                 android:id="@+id/circleProgress"
                 app:cpv_textSize="32dp"
                 app:cpv_unitSize="14dp"
+                app:cpv_unitColor="@android:color/white"
                 app:cpv_unitPosition="bottom"
                 app:cpv_rimWidth="18dp"
                 app:cpv_barWidth="18dp"
                 android:layout_gravity="center_vertical" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="pm2.5"
-                android:id="@+id/textView"
-                android:layout_gravity="center"
-                android:layout_marginTop="28dp" />
         </FrameLayout>
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1.4"
-            android:layout_gravity="center_vertical">
+            android:layout_weight="1.6"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="2dp">
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -63,10 +61,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/PSI"
                     android:id="@+id/textView23"
-                    android:layout_margin="4dp" />
+                    android:layout_margin="4dp"
+                    android:textSize="17dp"
+                    android:textColor="@android:color/white"/>
             </LinearLayout>
 
             <LinearLayout
@@ -86,7 +85,9 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/pm25"
                     android:id="@+id/textView24"
-                    android:layout_margin="4dp" />
+                    android:layout_margin="4dp"
+                    android:textSize="17dp"
+                    android:textColor="@android:color/white"/>
             </LinearLayout>
 
             <LinearLayout
@@ -106,7 +107,10 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/pm10"
                     android:id="@+id/textView25"
-                    android:layout_margin="4dp" />
+                    android:layout_margin="4dp"
+                    android:textSize="17dp"
+                    android:textColor="@android:color/white"
+                    />
             </LinearLayout>
 
             <LinearLayout
@@ -126,7 +130,9 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/O3"
                     android:id="@+id/textView26"
-                    android:layout_margin="4dp" />
+                    android:layout_margin="4dp"
+                    android:textSize="17dp"
+                    android:textColor="@android:color/white"/>
             </LinearLayout>
 
             <LinearLayout
@@ -146,7 +152,9 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/CO"
                     android:id="@+id/textView27"
-                    android:layout_margin="4dp" />
+                    android:layout_margin="4dp"
+                    android:textSize="17dp"
+                    android:textColor="@android:color/white"/>
             </LinearLayout>
 
         </LinearLayout>
@@ -162,11 +170,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="0.0"
                 android:id="@+id/psi"
-                android:layout_margin="4dp"
-                android:layout_gravity="center_vertical|right" />
+                android:layout_gravity="center_vertical|right"
+                android:textSize="17dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:textColor="@android:color/white"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -174,8 +184,11 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="0.0"
                 android:id="@+id/pm25"
-                android:layout_margin="4dp"
-                android:layout_gravity="center_vertical|right" />
+                android:layout_gravity="center_vertical|right"
+                android:textSize="17dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:textColor="@android:color/white"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -183,8 +196,11 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="0.0"
                 android:id="@+id/pm10"
-                android:layout_margin="4dp"
-                android:layout_gravity="center_vertical|right" />
+                android:layout_gravity="center_vertical|right"
+                android:textSize="17dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:textColor="@android:color/white"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -192,8 +208,11 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="0.0"
                 android:id="@+id/o3"
-                android:layout_margin="4dp"
-                android:layout_gravity="center_vertical|right" />
+                android:layout_gravity="center_vertical|right"
+                android:textSize="17dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:textColor="@android:color/white"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -201,8 +220,11 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="0.0"
                 android:id="@+id/co"
-                android:layout_margin="4dp"
-                android:layout_gravity="center_vertical|right" />
+                android:layout_gravity="center_vertical|right"
+                android:textSize="17dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="4dp"
+                android:textColor="@android:color/white"/>
         </LinearLayout>
 
     </LinearLayout>
@@ -215,6 +237,7 @@
         android:id="@+id/time"
         android:layout_gravity="bottom|right"
         android:layout_marginRight="8dp"
-        android:textSize="12dp" />
+        android:textSize="12dp"
+        android:textColor="@android:color/white"/>
 
 </FrameLayout>

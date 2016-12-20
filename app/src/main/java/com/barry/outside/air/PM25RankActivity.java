@@ -15,7 +15,7 @@ public class PM25RankActivity extends ToolbarActivity {
         setContentView(R.layout.activity_fragment);
 
         initToolbar(R.mipmap.ic_back);
-        getSupportActionBar().setTitle(R.string.pm25_rank);
+        getSupportActionBar().setTitle(R.string.rank);
 
         Fragment f = new AirRankingFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.container, f).commit();

@@ -12,6 +12,7 @@
         android:layout_gravity="center_horizontal"
         android:id="@+id/containerAirInfo"
         android:layout_weight="1"
+        android:background="@color/background"
         android:paddingBottom="300dp"></FrameLayout>
 
     <FrameLayout
@@ -25,11 +26,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/containerMap"
-            android:background="@color/color_light_green"
             android:paddingBottom="0dp"
             android:layout_weight="1"
-            android:layout_marginTop="28dp"
-            android:paddingTop="4dp">
+            android:layout_marginTop="28dp">
 
         </FrameLayout>
 
@@ -40,7 +39,6 @@
             android:layout_gravity="center_horizontal|top"
             android:src="@mipmap/ic_keyboard_capslock_white_48dp"
             android:focusable="true"
-            android:tint="@android:color/white"
             android:background="@drawable/bg_circle"
             android:padding="8dp" />
     </FrameLayout>

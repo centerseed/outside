@@ -29,4 +29,12 @@ public class PreferenceUtils {
     public static boolean getAutoLocalize(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("auto_localize", true);
     }
+
+    public static void setDefaultType(Context context, int type) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putInt("type", type).commit();
+    }
+
+    public static int getDefaultType(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getInt("type", 0);
+    }
 }

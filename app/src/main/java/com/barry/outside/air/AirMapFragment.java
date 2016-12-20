@@ -43,6 +43,7 @@ public class AirMapFragment extends BroadcastFragment implements OnMapReadyCallb
     private GoogleMap mMap;
     Location mLocation;
     boolean isCollapse = false;
+    int mCurrentType;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,6 +57,8 @@ public class AirMapFragment extends BroadcastFragment implements OnMapReadyCallb
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        mCurrentType = PreferenceUtils.getDefaultType(getContext());
     }
 
     @Override
@@ -125,11 +128,30 @@ public class AirMapFragment extends BroadcastFragment implements OnMapReadyCallb
 
         if (cursor != null && cursor.moveToFirst()) {
             ArrayList<SiteInfo> infos = LocationUtils.getNearestSiteArray(cursor, mLocation);
+            mCurrentType = PreferenceUtils.getDefaultType(getContext());
 
+            if (mMap != null) {
+                mMap.clear();
+            }
             for (int i = 0; i < infos.size(); i++) {
                 SiteInfo info = infos.get(i);
-                BitmapDescriptor icon = getMarkerIcon(ColorUtils.getPM25Color(getContext(), info.getPm25()));
-                MarkerOptions options = new MarkerOptions().position(info.getLatlng()).title(info.getName()).icon(icon).snippet(info.getPm25() + "");
+                MarkerOptions options;
+                if (mCurrentType == 0) {
+                    BitmapDescriptor icon = getMarkerIcon(ColorUtils.getPM25Color(getContext(), info.getPm25()));
+                    options = new MarkerOptions().position(info.getLatlng()).title(info.getName()).icon(icon).snippet(info.getPm25() + "");
+                } else if (mCurrentType == 1) {
+                    BitmapDescriptor icon = getMarkerIcon(ColorUtils.getPM10(getContext(), info.getPm10()));
+                    options = new MarkerOptions().position(info.getLatlng()).title(info.getName()).icon(icon).snippet(info.getPm10() + "");
+                } else if (mCurrentType == 2) {
+                    BitmapDescriptor icon = getMarkerIcon(ColorUtils.getPSIColor(getContext(), info.getPSI()));
+                    options = new MarkerOptions().position(info.getLatlng()).title(info.getName()).icon(icon).snippet(info.getPSI() + "");
+                } else if (mCurrentType == 3) {
+                    BitmapDescriptor icon = getMarkerIcon(ColorUtils.getO3(getContext(), info.getO3()));
+                    options = new MarkerOptions().position(info.getLatlng()).title(info.getName()).icon(icon).snippet(info.getO3() + "");
+                } else {
+                    BitmapDescriptor icon = getMarkerIcon(ColorUtils.getCO(getContext(), info.getCO()));
+                    options = new MarkerOptions().position(info.getLatlng()).title(info.getName()).icon(icon).snippet(info.getCO() + "");
+                }
 
                 if (i == 0)
                     mMap.addMarker(options).showInfoWindow();

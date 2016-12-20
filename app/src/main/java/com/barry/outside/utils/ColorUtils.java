@@ -11,28 +11,28 @@ public class ColorUtils {
 
     public static int getPM25Color(Context context, int pm25) {
         int colors[] = context.getResources().getIntArray(R.array.color_pm25_array);
-        if (pm25 < 11) {
+        if (pm25 < 15) {
             return colors[0];
-        } else if (pm25 >= 11 && pm25 < 35) {
+        } else if (pm25 >= 15 && pm25 < 35) {
             return colors[1];
-        } else if (pm25 >= 25 && pm25 < 53) {
+        } else if (pm25 >= 35 && pm25 < 54) {
             return colors[2];
-        } else if (pm25 >= 53 && pm25 < 70) {
+        } else if (pm25 >= 54 && pm25 < 150) {
             return colors[3];
         } else {
             return colors[4];
         }
     }
 
-    public static int getPSIColor(Context context, int psi) {
+    public static int getPSIColor(Context context, float psi) {
         int colors[] = context.getResources().getIntArray(R.array.color_pm25_array);
         if (psi < 50) {
             return colors[0];
-        } else if (psi >= 50 && psi < 100) {
+        } else if (psi >= 51 && psi < 100) {
             return colors[1];
-        } else if (psi >= 100 && psi < 200) {
+        } else if (psi >= 101 && psi < 150) {
             return colors[2];
-        } else if (psi >= 200 && psi < 299) {
+        } else if (psi >= 151 && psi < 200) {
             return colors[3];
         } else {
             return colors[4];
@@ -41,13 +41,13 @@ public class ColorUtils {
 
     public static int getPM10(Context context, int pm10) {
         int colors[] = context.getResources().getIntArray(R.array.color_pm25_array);
-        if (pm10 < 50) {
+        if (pm10 < 54) {
             return colors[0];
-        } else if (pm10 >= 50 && pm10 < 150) {
+        } else if (pm10 >= 55 && pm10 < 125) {
             return colors[1];
-        } else if (pm10 >= 150 && pm10 < 350) {
+        } else if (pm10 >= 126 && pm10 < 254) {
             return colors[2];
-        } else if (pm10 >= 350 && pm10 < 420) {
+        } else if (pm10 >= 255 && pm10 < 354) {
             return colors[3];
         } else {
             return colors[4];
@@ -56,13 +56,13 @@ public class ColorUtils {
 
     public static int getO3(Context context, float o3) {
         int colors[] = context.getResources().getIntArray(R.array.color_pm25_array);
-        if (o3 < 60) {
+        if (o3 < 54) {
             return colors[0];
-        } else if (o3 >= 60 && o3 < 120) {
+        } else if (o3 >= 55 && o3 < 70) {
             return colors[1];
-        } else if (o3 >= 120 && o3 < 400) {
+        } else if (o3 >= 71 && o3 < 85) {
             return colors[2];
-        } else if (o3 >= 400 && o3 < 500) {
+        } else if (o3 >= 86 && o3 < 105) {
             return colors[3];
         } else {
             return colors[4];
@@ -71,13 +71,13 @@ public class ColorUtils {
 
     public static int getCO(Context context, float co) {
         int colors[] = context.getResources().getIntArray(R.array.color_pm25_array);
-        if (co < 4.5) {
+        if (co < 4.4) {
             return colors[0];
-        } else if (co >= 4.5 && co < 9) {
+        } else if (co >= 4.5 && co < 9.4) {
             return colors[1];
-        } else if (co >= 9 && co < 15) {
+        } else if (co >= 9.5 && co < 12.4) {
             return colors[2];
-        } else if (co >= 15 && co < 30) {
+        } else if (co >= 12.4 && co < 15.4) {
             return colors[3];
         } else {
             return colors[4];

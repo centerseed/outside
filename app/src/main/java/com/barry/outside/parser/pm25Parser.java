@@ -42,15 +42,15 @@ public class pm25Parser extends BaseJsonParser {
                 JSONObject jsonObject = array.getJSONObject(i);
 
                 cv.put(WeatherProvider.FIELD_PM25, jsonObject.optInt("PM2.5"));
-                cv.put(WeatherProvider.FIELD_PM10, jsonObject.optString("PM10"));
+                cv.put(WeatherProvider.FIELD_PM10, jsonObject.optString("PM10").length() == 0 ? "0" : jsonObject.optString("PM10"));
                 cv.put(WeatherProvider.FIELD_NO2, jsonObject.optString("NO2"));
                 cv.put(WeatherProvider.FIELD_NOX, jsonObject.optString("NOx"));
                 cv.put(WeatherProvider.FIELD_SO2, jsonObject.optString("SO2"));
+                cv.put(WeatherProvider.FIELD_NO, jsonObject.optString("NO").length() == 0 ? "0" : jsonObject.optString("NO"));
+                cv.put(WeatherProvider.FIELD_CO, jsonObject.optString("CO").length() == 0 ? "0" : jsonObject.optString("CO"));
                 cv.put(WeatherProvider.FIELD_NO, jsonObject.optString("NO"));
-                cv.put(WeatherProvider.FIELD_CO, jsonObject.optString("CO"));
-                cv.put(WeatherProvider.FIELD_NO, jsonObject.optString("NO"));
-                cv.put(WeatherProvider.FIELD_O3, jsonObject.optString("O3"));
-                cv.put(WeatherProvider.FIELD_PSI, jsonObject.optString("PSI"));
+                cv.put(WeatherProvider.FIELD_O3, jsonObject.optString("O3").length() == 0? "0" : jsonObject.optString("O3"));
+                cv.put(WeatherProvider.FIELD_PSI, jsonObject.optString("AQI"));
                 cv.put(WeatherProvider.FIELD_TIME, jsonObject.optString("PublishTime"));
                 providerClient.update(uri, cv, WeatherProvider.FIELD_SITE_NAME + "=?", new String[]{jsonObject.optString("SiteName")});
             }

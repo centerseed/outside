@@ -3,6 +3,7 @@ package com.barry.outside.air;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,14 +19,18 @@ import android.widget.TextView;
 import com.barry.outside.BroadcastConst;
 import com.barry.outside.R;
 import com.barry.outside.base.BroadcastFragment;
+import com.barry.outside.AirInfoTypeFragmentDialog;
 import com.barry.outside.provider.WeatherProvider;
+import com.barry.outside.utils.BroadCastUtils;
 import com.barry.outside.utils.ColorUtils;
 import com.barry.outside.utils.LocationUtils;
 import com.barry.outside.utils.PreferenceUtils;
 
 import at.grabner.circleprogress.CircleProgressView;
+import at.grabner.circleprogress.TextMode;
+import at.grabner.circleprogress.UnitPosition;
 
-public class AirInfoFragment extends BroadcastFragment {
+public class AirInfoFragment extends BroadcastFragment implements AirInfoTypeFragmentDialog.OnSelectedListener {
 
     CircleProgressView mCircleProgress;
     Location mLocation;
@@ -42,6 +47,8 @@ public class AirInfoFragment extends BroadcastFragment {
     ImageView mIconO3;
     ImageView mIconCO;
 
+    int mCurrType = 0;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -53,12 +60,20 @@ public class AirInfoFragment extends BroadcastFragment {
         super.onViewCreated(view, savedInstanceState);
 
         mCircleProgress = (CircleProgressView) view.findViewById(R.id.circleProgress);
-        mCircleProgress.setContourSize(0);
-        mCircleProgress.setBlockCount(20);
-        mCircleProgress.setMaxValue(72f);
-        mCircleProgress.setRimColor(getResources().getColor(R.color.color_grey));
-        mCircleProgress.setUnit(" ");
+        //mCircleProgress.setContourSize(0);
+        //mCircleProgress.setBlockCount(20);
+        mCircleProgress.setRimColor(Color.argb(130, 200, 200, 200));
         mCircleProgress.setUnitVisible(true);
+        mCircleProgress.setTextColor(getResources().getColor(android.R.color.white));
+        mCircleProgress.setUnitColor(getResources().getColor(android.R.color.white));
+        mCircleProgress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AirInfoTypeFragmentDialog f = AirInfoTypeFragmentDialog.getInstance(mCurrType);
+                f.setSelectedListener(AirInfoFragment.this);
+                f.show(getChildFragmentManager(), "");
+            }
+        });
 
         mPSI = (TextView) view.findViewById(R.id.psi);
         mPM25 = (TextView) view.findViewById(R.id.pm25);
@@ -74,6 +89,7 @@ public class AirInfoFragment extends BroadcastFragment {
         mIconCO = (ImageView) view.findViewById(R.id.ic_co);
 
         mLocation = PreferenceUtils.getLastLocation(getContext());
+        mCurrType = PreferenceUtils.getDefaultType(getContext());
     }
 
     @Override
@@ -117,10 +133,42 @@ public class AirInfoFragment extends BroadcastFragment {
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         if (cursor != null && cursor.moveToFirst()) {
             SiteInfo info = LocationUtils.getNearestSiteArray(cursor, mLocation).get(0);
-            mCircleProgress.setValueAnimated(info.getPm25() * 72 / 100f);
-            mCircleProgress.setBarColor(ColorUtils.getPM25Color(getContext(), info.getPm25()));
+            mCircleProgress.setTextMode(TextMode.TEXT);
+            if (mCurrType == 0) {
+                mCircleProgress.setMaxValue(150f);
+                mCircleProgress.setValueAnimated(info.getPm25());
+                mCircleProgress.setText(info.getPm25() + "");
+                mCircleProgress.setBarColor(ColorUtils.getPM25Color(getContext(), info.getPm25()));
+                mCircleProgress.setUnit(getString(R.string.pm25));
+            } else if (mCurrType == 1) {
+                mCircleProgress.setMaxValue(354f);
+                mCircleProgress.setValueAnimated(info.getPm10());
+                mCircleProgress.setText(info.getPm10() + "");
+                mCircleProgress.setBarColor(ColorUtils.getPM10(getContext(), info.getPm10()));
+                mCircleProgress.setUnit(getString(R.string.pm10));
+            } else if (mCurrType == 2) {
+                mCircleProgress.setMaxValue(200f);
+                mCircleProgress.setValueAnimated(info.getPSI());
+                mCircleProgress.setText(info.getPSI() + "");
+                mCircleProgress.setBarColor(ColorUtils.getPSIColor(getContext(), info.getPSI()));
+                mCircleProgress.setUnit(getString(R.string.PSI));
+            } else if (mCurrType == 3) {
+                mCircleProgress.setMaxValue(105f);
+                mCircleProgress.setValueAnimated(info.getO3());
+                mCircleProgress.setText(info.getO3() + "");
+                mCircleProgress.setBarColor(ColorUtils.getO3(getContext(), info.getO3()));
+                mCircleProgress.setUnit(getString(R.string.O3));
+            } else {
+                mCircleProgress.setMaxValue(15.4f);
+                mCircleProgress.setValueAnimated(info.getCO());
+                mCircleProgress.setText(info.getCO() + "");
+                mCircleProgress.setBarColor(ColorUtils.getCO(getContext(), info.getCO()));
+                mCircleProgress.setUnit(getString(R.string.CO));
+            }
 
-            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.app_name) + " - " + info.getName());
+            mCircleProgress.setUnitPosition(UnitPosition.BOTTOM);
+
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.title_site) + " - " + info.getName());
 
             mPSI.setText(info.getPSI() + "");
             mPM25.setText(info.getPm25() + "");
@@ -140,5 +188,14 @@ public class AirInfoFragment extends BroadcastFragment {
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
+    }
+
+    @Override
+    public void onSelected(int position) {
+        mCurrType = position;
+        getLoaderManager().restartLoader(0, null, this);
+        PreferenceUtils.setDefaultType(getContext(), mCurrType);
+
+        BroadCastUtils.sendParcelableBroadcast(getActivity(), BroadcastConst.BROADCAST_GET_LOCATION, "location", mLocation);
     }
 }

@@ -200,6 +200,10 @@ public class HomeFragment extends Fragment implements chooseCountyFragmentDialog
     private void prepareAnimation() {
         mMapPosition = mMapInfo.getTop();
         mOriginHeight = mMapInfo.getMeasuredHeight();
+        if (getActivity() == null || ((AppCompatActivity) getActivity()).getSupportActionBar() == null) {
+            return;
+        }
+
         mToolbarHeight = ((AppCompatActivity) getActivity()).getSupportActionBar().getHeight();
 
         int softHeight = getSoftButtonsBarHeight();

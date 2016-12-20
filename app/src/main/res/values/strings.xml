@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">OutSide</string>title_stock_provider
     <string name="title_weather_provider">觀測資料</string>
+    <string name="title_site">測站</string>
     <string name="pm25">PM2.5</string>
     <string name="pm10">PM10</string>
     <string name="CO">一氧化碳</string>
@@ -11,17 +12,18 @@
     <string name="setting">設定</string>
     <string name="location">現在位置：</string>
     <string name="choose_country">選擇縣市</string>
+    <string name="choose_airinfo_type">選擇空氣指標</string>
     <string name="localizing">正在更新目前位置...</string>
     <string name="auto_localizing">自動取得位置</string>
     <string name="update_time">更新時間:</string>
     <string name="update_site">更新測站資料</string>
-    <string name="air_help">PM2.5(即時細懸浮微粒)濃度以及對應說明如下：</string>
-    <string name="pm25_very_low">非常低</string>
-    <string name="pm25_low">低</string>
-    <string name="pm25_normal">一般</string>
-    <string name="pm25_high">高</string>
-    <string name="pm25_very_high">非常高</string>
-    <string name="pm25_rank">PM2.5排名</string>
+    <string name="air_help">各項指數的濃度對應說明如下：</string>
+    <string name="pm25_very_low">良好</string>
+    <string name="pm25_low">普通</string>
+    <string name="pm25_normal">敏感族群不健康</string>
+    <string name="pm25_high">所有族群不健康</string>
+    <string name="pm25_very_high">非常不健康</string>
+    <string name="rank">排名</string>
     <string name="data_source">資料來源：</string>
     <string name="title_activity_init">InitActivity</string>
     <string name="title_activity_maps">Map</string>
