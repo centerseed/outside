@@ -27,11 +27,10 @@ import android.view.animation.RotateAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.barry.outside.air.AirInfoFragment;
 import com.barry.outside.air.AirMapFragment;
-import com.barry.outside.utils.BroadCastUtils;
+import com.barry.outside.utils.BroadcastUtils;
 import com.barry.outside.utils.LocationUtils;
 import com.barry.outside.utils.PreferenceUtils;
 
@@ -154,7 +153,7 @@ public class HomeFragment extends Fragment implements chooseCountyFragmentDialog
                     @Override
                     public void run() {
                         mLoading.setVisibility(View.GONE);
-                        BroadCastUtils.sendParcelableBroadcast(getActivity(), BroadcastConst.BROADCAST_GET_LOCATION, "location", lastLocation);
+                        BroadcastUtils.sendParcelableBroadcast(getActivity(), BroadcastConst.BROADCAST_GET_LOCATION, "location", lastLocation);
                     }
                 }, 1000);
             }
@@ -191,7 +190,7 @@ public class HomeFragment extends Fragment implements chooseCountyFragmentDialog
                 return super.onOptionsItemSelected(item);
             }
             Location lastLocation = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            BroadCastUtils.sendParcelableBroadcast(getActivity(), BroadcastConst.BROADCAST_GET_LOCATION, "location", lastLocation);
+            BroadcastUtils.sendParcelableBroadcast(getActivity(), BroadcastConst.BROADCAST_GET_LOCATION, "location", lastLocation);
             mLocationManager.requestLocationUpdates(getProviderName(), 0, 0, locationListener);
         }
         return super.onOptionsItemSelected(item);
@@ -267,14 +266,14 @@ public class HomeFragment extends Fragment implements chooseCountyFragmentDialog
     LocationListener locationListener = new LocationListener() {
         public void onLocationChanged(Location location) {
             Log.d("location", location.toString());
+            mLocationManager.removeUpdates(locationListener);
             PreferenceUtils.setLastLocation(getContext(), location);
 
-            BroadCastUtils.sendParcelableBroadcast(getActivity(), BroadcastConst.BROADCAST_GET_LOCATION, "location", location);
+            BroadcastUtils.sendParcelableBroadcast(getActivity(), BroadcastConst.BROADCAST_GET_LOCATION, "location", location);
             mLoading.setVisibility(View.GONE);
             if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 return;
             }
-            mLocationManager.removeUpdates(locationListener);
         }
 
         public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -291,7 +290,7 @@ public class HomeFragment extends Fragment implements chooseCountyFragmentDialog
     public void onSelected(String location) {
         Location lo = LocationUtils.getLocationByName(getContext(), location);
         PreferenceUtils.setLastLocation(getContext(), lo);
-        BroadCastUtils.sendParcelableBroadcast(getActivity(), BroadcastConst.BROADCAST_SELECT_LOCATION, "location", lo);
+        BroadcastUtils.sendParcelableBroadcast(getActivity(), BroadcastConst.BROADCAST_SELECT_LOCATION, "location", lo);
     }
 
     String getProviderName() {

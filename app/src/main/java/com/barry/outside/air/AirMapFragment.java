@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,7 @@ import com.barry.outside.BroadcastConst;
 import com.barry.outside.R;
 import com.barry.outside.base.BroadcastFragment;
 import com.barry.outside.provider.WeatherProvider;
-import com.barry.outside.utils.BroadCastUtils;
+import com.barry.outside.utils.BroadcastUtils;
 import com.barry.outside.utils.ColorUtils;
 import com.barry.outside.utils.LocationUtils;
 import com.barry.outside.utils.PreferenceUtils;
@@ -29,7 +28,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
@@ -87,7 +85,6 @@ public class AirMapFragment extends BroadcastFragment implements OnMapReadyCallb
 
         if (action == BroadcastConst.BROADCAST_CLICK_MAP_POS && !isCollapse) {
             mLocation = intent.getParcelableExtra("location");
-            getLoaderManager().restartLoader(0, null, this);
             moveCamera(mMap.getCameraPosition().zoom, mLocation);
         }
 
@@ -195,9 +192,9 @@ public class AirMapFragment extends BroadcastFragment implements OnMapReadyCallb
         Location location = new Location("");
         location.setLatitude(latLng.latitude);
         location.setLongitude(latLng.longitude);
-        PreferenceUtils.setLastLocation(getContext(), location);
+        BroadcastUtils.sendParcelableBroadcast(getActivity(), BroadcastConst.BROADCAST_CLICK_MAP_POS, "location", location);
 
-        BroadCastUtils.sendParcelableBroadcast(getActivity(), BroadcastConst.BROADCAST_CLICK_MAP_POS, "location", location);
+        PreferenceUtils.setLastLocation(getContext(), location);
         return false;
     }
 

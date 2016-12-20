@@ -36,7 +36,7 @@ public class WeatherProvider extends BaseContentProvider {
 
     private class WeatherDatabase extends SQLiteOpenHelper {
 
-        private final static int _DBVersion = 5;
+        private final static int _DBVersion = 6;
         private final static String _DBName = "weather.db";
 
         public WeatherDatabase(Context context) {

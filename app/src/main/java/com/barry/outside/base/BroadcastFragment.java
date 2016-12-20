@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 
 import com.barry.outside.BroadcastConst;
 import com.google.android.gms.maps.GoogleMap;
@@ -40,13 +41,13 @@ abstract public class BroadcastFragment extends ContentFragment {
         super.onResume();
         IntentFilter intentFilter = new IntentFilter();
         addIntentFilter(intentFilter);
-        getContext().registerReceiver(receiver, intentFilter);
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, intentFilter);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        getContext().unregisterReceiver(receiver);
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
     }
 
     public abstract void addIntentFilter(IntentFilter filter);

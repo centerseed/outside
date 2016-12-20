@@ -21,7 +21,7 @@ import com.barry.outside.R;
 import com.barry.outside.base.BroadcastFragment;
 import com.barry.outside.AirInfoTypeFragmentDialog;
 import com.barry.outside.provider.WeatherProvider;
-import com.barry.outside.utils.BroadCastUtils;
+import com.barry.outside.utils.BroadcastUtils;
 import com.barry.outside.utils.ColorUtils;
 import com.barry.outside.utils.LocationUtils;
 import com.barry.outside.utils.PreferenceUtils;
@@ -196,6 +196,6 @@ public class AirInfoFragment extends BroadcastFragment implements AirInfoTypeFra
         getLoaderManager().restartLoader(0, null, this);
         PreferenceUtils.setDefaultType(getContext(), mCurrType);
 
-        BroadCastUtils.sendParcelableBroadcast(getActivity(), BroadcastConst.BROADCAST_GET_LOCATION, "location", mLocation);
+        BroadcastUtils.sendParcelableBroadcast(getActivity(), BroadcastConst.BROADCAST_GET_LOCATION, "location", mLocation);
     }
 }
