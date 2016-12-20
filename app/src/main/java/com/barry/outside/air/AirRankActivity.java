@@ -7,7 +7,7 @@ import android.view.MenuItem;
 import com.barry.outside.R;
 import com.barry.outside.base.ToolbarActivity;
 
-public class PM25RankActivity extends ToolbarActivity {
+public class AirRankActivity extends ToolbarActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -17,7 +17,7 @@ public class PM25RankActivity extends ToolbarActivity {
         initToolbar(R.mipmap.ic_back);
         getSupportActionBar().setTitle(R.string.rank);
 
-        Fragment f = new AirRankingFragment();
+        Fragment f = new AirRankListFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.container, f).commit();
     }
 

@@ -21,7 +21,7 @@ import com.barry.outside.R;
 import com.barry.outside.AirInfoTypeFragmentDialog;
 import com.barry.outside.provider.WeatherProvider;
 
-public class AirRankingFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,AirInfoTypeFragmentDialog.OnSelectedListener {
+public class AirRankListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,AirInfoTypeFragmentDialog.OnSelectedListener {
 
     Uri contentUri;
     SiteCursorAdapter adapter;
@@ -93,9 +93,9 @@ public class AirRankingFragment extends Fragment implements LoaderManager.Loader
         CursorLoader cl = new CursorLoader(getActivity());
         cl.setUri(contentUri);
         if (isASC) {
-            cl.setSortOrder(mProviderInfo[mAirInfoPos] + " ASC, " + WeatherProvider.FIELD_COUNTRY + " ASC");
+            cl.setSortOrder("cast(" + mProviderInfo[mAirInfoPos] + " as REAL) ASC, " + WeatherProvider.FIELD_COUNTRY + " ASC");
         } else {
-            cl.setSortOrder(mProviderInfo[mAirInfoPos] + " DESC, " + WeatherProvider.FIELD_COUNTRY + " ASC");
+            cl.setSortOrder("cast(" + mProviderInfo[mAirInfoPos] + " as REAL) DESC, " + WeatherProvider.FIELD_COUNTRY + " ASC");
         }
 
         return cl;

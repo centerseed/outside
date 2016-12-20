@@ -16,7 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.barry.outside.account.AccountUtil;
-import com.barry.outside.air.AirRankingFragment;
+import com.barry.outside.air.AirRankListFragment;
 import com.barry.outside.provider.WeatherProvider;
 
 import java.util.Stack;
@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         if (id == R.id.nav_ranking) {
-            f = new AirRankingFragment();
+            f = new AirRankListFragment();
         }
 
         if (id == R.id.nav_setting) {

@@ -17,7 +17,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
-        <activity android:name=".air.PM25RankActivity" />
+        <activity android:name=".air.AirRankActivity" />
 
         <service
             android:name=".account.AuthenticatorService"
