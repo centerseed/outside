@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -260,7 +261,7 @@ public class HomeFragment extends Fragment implements chooseCountyFragmentDialog
     protected void sendBroadCast(int action) {
         Intent intent = new Intent();
         intent.setAction(action + "");
-        getActivity().sendBroadcast(intent);
+        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
     }
 
     LocationListener locationListener = new LocationListener() {
