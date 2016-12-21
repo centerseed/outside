@@ -3,8 +3,8 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@android:color/white">
+    android:background="@android:color/white"
+    android:orientation="vertical">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
@@ -22,17 +22,17 @@
                 android:id="@+id/textView10"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/sub_margin"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
                 android:text="@string/auto_localizing"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:gravity="center_vertical"
-                android:layout_weight="1"
-                android:layout_marginLeft="@dimen/sub_margin"
                 android:textSize="16dp" />
 
             <Switch
+                android:id="@+id/sw_auto_localize"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/sw_auto_localize"
                 android:checked="false" />
 
         </LinearLayout>
@@ -54,14 +54,14 @@
                 android:id="@+id/textView11"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/sub_margin"
+                android:layout_marginRight="@dimen/sub_margin"
+                android:layout_marginTop="@dimen/sub_margin"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
                 android:text="@string/air_help"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:gravity="center_vertical"
-                android:layout_weight="1"
-                android:layout_marginLeft="@dimen/sub_margin"
-                android:textSize="16dp"
-                android:layout_marginRight="@dimen/sub_margin"
-                android:layout_marginTop="@dimen/sub_margin" />
+                android:textSize="16dp" />
 
             <TableRow
                 android:layout_width="match_parent"
@@ -69,54 +69,54 @@
                 android:layout_marginTop="8dp">
 
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/pm25_very_low"
                     android:id="@+id/textView15"
-                    android:layout_weight="1"
-                    android:layout_margin="4dp"
-                    android:gravity="center_horizontal" />
-
-                <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/pm25_low"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text="@string/pm25_very_low"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <TextView
                     android:id="@+id/textView16"
-                    android:layout_weight="1"
-                    android:layout_margin="4dp"
-                    android:gravity="center_horizontal" />
-
-                <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/pm25_normal"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text="@string/pm25_low"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <TextView
                     android:id="@+id/textView17"
-                    android:layout_weight="1"
-                    android:layout_margin="4dp"
-                    android:gravity="center_horizontal" />
-
-                <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/pm25_high"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text="@string/pm25_normal"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <TextView
                     android:id="@+id/textView18"
-                    android:layout_weight="1"
-                    android:layout_margin="4dp"
-                    android:gravity="center_horizontal" />
-
-                <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/pm25_very_high"
-                    android:id="@+id/textView19"
-                    android:layout_weight="1"
                     android:layout_margin="4dp"
-                    android:gravity="center_horizontal" />
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text="@string/pm25_high"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <TextView
+                    android:id="@+id/textView19"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text="@string/pm25_very_high"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
             </TableRow>
 
             <TableRow
@@ -125,83 +125,98 @@
                 android:layout_marginBottom="4dp">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="6dp"
                     android:id="@+id/imageView3"
-                    android:background="@color/pm25_very_low"
-                    android:layout_weight="1"
-                    android:layout_margin="4dp" />
-
-                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="6dp"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    android:background="@color/pm25_very_low" />
+
+                <ImageView
                     android:id="@+id/imageView4"
-                    android:layout_weight="1"
-                    android:background="@color/pm25_low"
-                    android:layout_margin="4dp" />
-
-                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="6dp"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    android:background="@color/pm25_low" />
+
+                <ImageView
                     android:id="@+id/imageView6"
-                    android:layout_weight="1"
-                    android:background="@color/pm25_normal"
-                    android:layout_margin="4dp" />
-
-                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="6dp"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    android:background="@color/pm25_normal" />
+
+                <ImageView
                     android:id="@+id/imageView7"
-                    android:background="@color/pm25_high"
-                    android:layout_weight="1"
-                    android:layout_margin="4dp" />
-
-                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="6dp"
-                    android:id="@+id/imageView8"
+                    android:layout_margin="4dp"
                     android:layout_weight="1"
-                    android:background="@color/pm25_very_high"
-                    android:layout_margin="4dp" />
+                    android:background="@color/pm25_high" />
+
+                <ImageView
+                    android:id="@+id/imageView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="6dp"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    android:background="@color/pm25_very_high" />
             </TableRow>
 
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
-    z<android.support.v7.widget.CardView
-    android:layout_width="match_parent"
-    android:layout_height="60dp"
-    android:layout_margin="@dimen/main_margin"
-    card_view:cardCornerRadius="@dimen/corner_radius"
-    card_view:cardElevation="@dimen/cardview_default_elevation">
+    z
 
-    <LinearLayout
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_height="60dp"
+        android:layout_margin="@dimen/main_margin"
+        card_view:cardCornerRadius="@dimen/corner_radius"
+        card_view:cardElevation="@dimen/cardview_default_elevation">
 
-        <TextView
-            android:id="@+id/textView20"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/data_source"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:gravity="center_vertical"
-            android:layout_marginLeft="@dimen/sub_margin"
-            android:textSize="16dp" />
+            android:orientation="horizontal">
 
+            <TextView
+                android:id="@+id/textView20"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/sub_margin"
+                android:gravity="center_vertical"
+                android:text="@string/data_source"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/textView21"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="http://opendata.epa.gov.tw/"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/main_margin"
+        card_view:cardCornerRadius="@dimen/corner_radius"
+        card_view:cardElevation="@dimen/cardview_default_elevation">
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="http://opendata.epa.gov.tw/"
-            android:id="@+id/textView21"
-            android:layout_weight="1" />
-
-
-    </LinearLayout>
-</android.support.v7.widget.CardView>
-
+            android:id="@+id/version"
+            android:layout_margin="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Version:"/>
+        </android.support.v7.widget.CardView>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

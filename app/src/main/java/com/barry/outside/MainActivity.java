@@ -20,9 +20,19 @@ import android.view.View;
 
 import com.barry.outside.account.AccountUtil;
 import com.barry.outside.air.AirRankListFragment;
+import com.barry.outside.network.AQIParser;
+import com.barry.outside.network.AsyncCallback;
 import com.barry.outside.provider.WeatherProvider;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.io.IOException;
 import java.util.Stack;
+
+import okhttp3.Call;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -31,6 +41,8 @@ public class MainActivity extends AppCompatActivity
     String mAuth;
     NavigationView mNavigationView;
     ActionBarDrawerToggle mDrawerToggle;
+    protected OkHttpClient mClient;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +50,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        mClient = new OkHttpClient();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(
@@ -71,10 +85,24 @@ public class MainActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
 
+        /*
         Bundle args = new Bundle();
         args.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
         args.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
-        getContentResolver().requestSync(AccountUtil.getAccount(this), mAuth, args);
+        getContentResolver().requestSync(AccountUtil.getAccount(this), mAuth, args); */
+
+        Request request = new Request.Builder()
+                .url("http://opendata.epa.gov.tw/ws/Data/REWIQA/?$orderby=SiteName&$skip=0&$top=1000&format=json")
+                .build();
+        Call call = mClient.newCall(request);
+        call.enqueue(new AsyncCallback(this) {
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String json = response.body().string();
+                new AQIParser(getApplicationContext()).parse(json);
+            }
+        });
     }
 
 
@@ -87,8 +115,8 @@ public class MainActivity extends AppCompatActivity
             if (getSupportFragmentManager().findFragmentByTag("home") != null)
                 super.onBackPressed();
             else {
-                Fragment f = new HomeFragment();
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, f, "home").commit();
+                onNavigationItemSelected(mNavigationView.getMenu().getItem(0));
+                mNavigationView.getMenu().getItem(0).setChecked(true);
             }
         }
     }
@@ -121,7 +149,6 @@ public class MainActivity extends AppCompatActivity
         }
 
         if (f != null) {
-            getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
             getSupportFragmentManager().beginTransaction().replace(R.id.container, f).commit();
         }
     }

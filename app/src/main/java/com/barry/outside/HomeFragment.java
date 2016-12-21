@@ -225,7 +225,7 @@ public class HomeFragment extends Fragment implements chooseCountyFragmentDialog
     }
 
     private int getSoftButtonsBarHeight() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && getActivity() != null) {
             DisplayMetrics metrics = new DisplayMetrics();
             getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
             int usableHeight = metrics.heightPixels;
@@ -267,6 +267,8 @@ public class HomeFragment extends Fragment implements chooseCountyFragmentDialog
     LocationListener locationListener = new LocationListener() {
         public void onLocationChanged(Location location) {
             Log.d("location", location.toString());
+            if (getActivity() == null) return;
+
             mLocationManager.removeUpdates(locationListener);
             PreferenceUtils.setLastLocation(getContext(), location);
 
@@ -289,6 +291,8 @@ public class HomeFragment extends Fragment implements chooseCountyFragmentDialog
 
     @Override
     public void onSelected(String location) {
+        if (getActivity() == null) return;
+
         Location lo = LocationUtils.getLocationByName(getContext(), location);
         PreferenceUtils.setLastLocation(getContext(), lo);
         BroadcastUtils.sendParcelableBroadcast(getActivity(), BroadcastConst.BROADCAST_SELECT_LOCATION, "location", lo);
